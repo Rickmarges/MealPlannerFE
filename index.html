@@ -7,47 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meal Planner</title>
     <link rel="stylesheet" href="./style.css" />
-    <script>
-        function herewego() {
-            var yes = document.getElementById("huppa").value;
-            console.log("hij doet het");
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                console.log(this.responseText);
-                var hetObject = JSON.parse(this.responseText);
-                document.getElementById("yoyo").innerHTML = hetObject[0].instructions;
 
-            }
-            xhr.open("get", "http://localhost:8082/found-recipes/" + yes, true);
-            xhr.send();
-        }
-        function zopostje() {
-            var a = {};
-            a.instructions = "doe iets in de pan";
-            var dejson = JSON.stringify(a);
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                console.log("we zijn terug");
-
-            }
-            xhr.open("post", "http://localhost:8082/addrecipe", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(dejson);
-        }
-    </script>
 </head>
 
 <body>
-    <h1 id="title">MealPlanner!</h1>
+    <h1 id="title">Search Recipes!</h1>
 
-    <input id="huppa">
+    <input id="search-recipe">
 
-    <button onclick="herewego()">Hoi</button>
+    <button onclick="getRecipesByName()">Search Recipes</button>
 
-    <button onclick="zopostje()">Post</button>
+    <button onclick="addRecipe()">Post</button>
 
-    <div id="yoyo"></div>
-    <!-- <script src="./index.js"></script> -->
+    <div id="recipe-name"></div>
+    <div id="servings"></div>
+    <div id="description"></div>
+
+    <!-- <div id="recipe-name"></div>
+    <div id="servings"></div>
+    <div id="description"></div> -->
+
+    <script src="./script.js"></script>
 </body>
 
 </html>
