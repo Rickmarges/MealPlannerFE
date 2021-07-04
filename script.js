@@ -1,4 +1,38 @@
 
+function getAllRecipes() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(this.responseText);
+            var recipes = JSON.parse(this.responseText);
+            recipes.forEach(recipe => {
+                document.getElementById("recipe-result").innerHTML += `
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8 recipe__name">
+                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                            </div>                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-8 recipe__description">
+                                ${recipe.description}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            })
+        }
+    }
+    xhr.open("get", "http://localhost:8082/allrecipes", true);
+    xhr.send();
+}
+
 function findRecipesByName() {
     var recipeName = document.getElementById("search-recipe-by-name").value;
     console.log(recipeName);
@@ -9,10 +43,25 @@ function findRecipesByName() {
             var recipes = JSON.parse(this.responseText);
             document.getElementById("recipe-result").innerHTML = "";
             recipes.forEach(recipe => {
-                document.getElementById("recipe-result").innerHTML += `<br>
-              <div class="recipe__name">${recipe.name}</div>
-              <div class="recipe__servings"># Servings: ${recipe.servings}</div>
-              <div class="recipe__description">${recipe.description}</div>
+                document.getElementById("recipe-result").innerHTML += `
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8 recipe__name">
+                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                            </div>                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-8 recipe__description">
+                                ${recipe.description}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `;
             })
         };
@@ -33,15 +82,73 @@ function findRecipesByIngredient() {
             document.getElementById("recipe-result").innerHTML = "";
             recipes.forEach(recipe => {
                 document.getElementById("recipe-result").innerHTML += `<br>
-                <div class="recipe__name">${recipe.name}</div>
-                <div class="recipe__servings"># Servings: ${recipe.servings}</div>
-                <div class="recipe__description">${recipe.description}</div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8 recipe__name">
+                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                            </div>                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-8 recipe__description">
+                                ${recipe.description}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `;
             })
         }
     }
     xhr.open("get", "http://localhost:8082/findrecipesbyingredient/" + ingredientName, true);
     xhr.send();
+}
+
+function getRecipeDetail() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+    console.log(recipeIdParam);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(this.responseText);
+            var recipe = JSON.parse(this.responseText);
+            document.getElementById("recipe-title-top").innerHTML = recipe.name;
+            document.getElementById("recipe-detail").innerHTML += `
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-6">
+                        <h2 class="page-title">${recipe.name}</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8 recipe__name">
+                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                            </div>                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-8 recipe__description">
+                                ${recipe.description}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    xhr.open("get", "http://localhost:8082/findrecipebyid/" + recipeIdParam, true);
+    xhr.send();
+
 }
 
 function addRecipe() {
