@@ -1,18 +1,47 @@
 
-function getRecipesByName() {
-    var recipeName = document.getElementById("search-recipe").value;
+function findRecipesByName() {
+    var recipeName = document.getElementById("search-recipe-by-name").value;
     console.log(recipeName);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        console.log(this.responseText);
-        var recipes = JSON.parse(this.responseText);
-        recipes.forEach(element => document.getElementById("recipe-name").innerHTML = element.name);
-        recipes.forEach(element => document.getElementById("servings").innerHTML = element.servings);
-        recipes.forEach(element => document.getElementById("description").innerHTML = element.description);
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(this.responseText);
+            var recipes = JSON.parse(this.responseText);
+            document.getElementById("recipe-result").innerHTML = "";
+            recipes.forEach(recipe => {
+                document.getElementById("recipe-result").innerHTML += `<br>
+              <div class="recipe__name">${recipe.name}</div>
+              <div class="recipe__servings"># Servings: ${recipe.servings}</div>
+              <div class="recipe__description">${recipe.description}</div>
+            `;
+            })
+        };
     }
-    xhr.open("get", "http://localhost:8082/found-recipes/" + recipeName, true);
+    xhr.open("get", "http://localhost:8082/findrecipesbyname/" + recipeName, true);
     xhr.send();
 
+}
+
+function findRecipesByIngredient() {
+    var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
+    console.log(ingredientName);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(this.responseText);
+            var recipes = JSON.parse(this.responseText);
+            document.getElementById("recipe-result").innerHTML = "";
+            recipes.forEach(recipe => {
+                document.getElementById("recipe-result").innerHTML += `<br>
+                <div class="recipe__name">${recipe.name}</div>
+                <div class="recipe__servings"># Servings: ${recipe.servings}</div>
+                <div class="recipe__description">${recipe.description}</div>
+            `;
+            })
+        }
+    }
+    xhr.open("get", "http://localhost:8082/findrecipesbyingredient/" + ingredientName, true);
+    xhr.send();
 }
 
 function addRecipe() {
@@ -31,10 +60,21 @@ function addRecipe() {
             "fats": 46.0,
             "protein": 43.0,
             "calories": 617.0
-        },
+        }
     };
-    // a.instructions = "daan";
-    var dejson = JSON.stringify(a);
+    b.name = "Gebakken eitje";
+    b.servings = 6;
+    b.description = "Lekker ontbijt";
+    b.instructions = "1. Breek het ei in de pan. 2. Bak het ei. 3. Eet het ei.";
+    b.favorite = false;
+    b.mealTypes = ["Breakfast"]
+    b.nutritionValuesPerServing = {}
+    b.nutritionValuesPerServing.netCarbs = 1.0;
+    b.nutritionValuesPerServing.carbs = 1.5;
+    b.nutritionValuesPerServing.fats = 30.0;
+    b.nutritionValuesPerServing.protein = 60.0;
+    b.nutritionValuesPerServing.calories = 250.0;
+    var dejson = JSON.stringify(b);
     console.log(dejson);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {

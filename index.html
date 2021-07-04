@@ -7,27 +7,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meal Planner</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <h1 id="title">Search Recipes!</h1>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <h2>MEALPLANNER</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3 search">
+            <h4 id="title">SEARCH RECIPES BY NAME</h4>
 
-    <input id="search-recipe">
+            <input id="search-recipe-by-name" class="search-input">
+            <button class="btn btn-info" onclick="findRecipesByName()">Search Recipes</button>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3 search">
+            <h4 id="title">SEARCH RECIPES BY INGREDIENT</h4>
 
-    <button onclick="getRecipesByName()">Search Recipes</button>
+            <input id="search-recipe-by-ingredient" class="search-input">
+            <button class="btn btn-info" onclick="findRecipesByIngredient()">Search Recipes</button>
+        </div>
 
-    <button onclick="addRecipe()">Post</button>
+    </div>
 
-    <div id="recipe-name"></div>
-    <div id="servings"></div>
-    <div id="description"></div>
+    <div class="row" id="recipe-result"></div>
 
-    <!-- <div id="recipe-name"></div>
-    <div id="servings"></div>
-    <div id="description"></div> -->
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <h2>ADD NEW RECIPE</h2>
+        </div>
+    </div>
 
+    <form>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="recipe-name-input">Recipe Name</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="recipe-name-input" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="servings-input"># Servings</label>
+            </div>
+            <div class="col-sm-3">
+                <select id="servings-input" class="input_recipe" name="servings">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="recipe-description-input">Recipe Description</label>
+            </div>
+            <div class="col-sm-3">
+                <textarea id="recipe-description-input" class="input_recipe"></textarea><br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="recipe-instructions-input">Recipe Instructions</label>
+            </div>
+            <div class="col-sm-3">
+                <textarea id="recipe-instructions-input" class="input_recipe"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="recipe-favorite-input">Favorite</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="recipe-favorite-input" type="checkbox" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="recipe-rating">Rating</label>
+            </div>
+            <div class="col-sm-3">
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star-o"></span>
+                <span class="fa fa-star-o"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <h5 class="new-recipe-label">Meal Types</h5>
+            </div>
+            <div class="col-sm-3">
+                <input id="recipe-mealtype-input-breakfast" name="mealtypes" type="checkbox" value="breakfast" class="input_recipe"><label for="recipe-mealtype-input-breakfast" class="mealtypes"> Breakfast</label>
+                <input id="recipe-mealtype-input-lunch" name="mealtypes" type="checkbox" value="lunch" class="input_recipe"><label for="recipe-mealtype-input-lunch" class="mealtypes"> Lunch</label>
+                <input id="recipe-mealtype-input-dinner" name="mealtypes" type="checkbox" value="dinner" class="input_recipe"><label for="recipe-mealtype-input-dinner" class="mealtypes"> Dinner</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <h5 class="new-recipe-label">Nutrition Values per Serving</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="net-carbs">Net Carbs</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="net-carbs" name="nutrition-values-per-serving" type="number" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="carbs">Carbs</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="carbs" name="nutrition-values-per-serving" type="number" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="fats">Fats</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="fats" name="nutrition-values-per-serving" type="number" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="protein">Protein</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="protein" name="nutrition-values-per-serving" type="number" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="calories">Calories</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="calories" name="nutrition-values-per-serving" type="number" class="input_recipe">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <button class="btn btn-info" onclick="addRecipe()">ADD RECIPE</button>
+            </div>
+        </div>
+    </form>
     <script src="./script.js"></script>
+
 </body>
 
 </html>
