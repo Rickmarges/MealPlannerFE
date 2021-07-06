@@ -1,3 +1,18 @@
+const nameInput = document.getElementById('search-recipe-by-name');
+input.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        findRecipesByName();
+    }
+});
+
+const ingredientInput = document.getElementById('search-recipe-by-ingredient');
+input.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        findRecipesByIngredient();
+    }
+});
 
 const url = "https://mealplanner2.azurewebsites.net/"
 
