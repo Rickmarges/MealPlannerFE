@@ -1,20 +1,27 @@
-const nameInput = document.getElementById('search-recipe-by-name');
-nameInput.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        findRecipesByName();
-    }
-});
-
-const ingredientInput = document.getElementById('search-recipe-by-ingredient');
-ingredientInput.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        findRecipesByIngredient();
-    }
-});
-
+// The url to the backend application
 const url = "https://mealplanner2.azurewebsites.net/"
+
+// Add an eventlistener to the name input field, to search on enter press
+const nameInput = document.getElementById('search-recipe-by-name');
+if (nameInput != null) {
+    nameInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            findRecipesByName();
+        }
+    });
+}
+
+// Add an eventlistener to the ingredient input field, to search on enter press
+const ingredientInput = document.getElementById('search-recipe-by-ingredient');
+if (ingredientInput != null) {
+    ingredientInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            findRecipesByIngredient();
+        }
+    });
+}
 
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
