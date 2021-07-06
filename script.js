@@ -1,5 +1,5 @@
 const nameInput = document.getElementById('search-recipe-by-name');
-input.addEventListener("keyup", function(event) {
+nameInput.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         findRecipesByName();
@@ -7,7 +7,7 @@ input.addEventListener("keyup", function(event) {
 });
 
 const ingredientInput = document.getElementById('search-recipe-by-ingredient');
-input.addEventListener("keyup", function(event) {
+ingredientInput.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         findRecipesByIngredient();
