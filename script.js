@@ -131,14 +131,26 @@ function getRecipeDetail() {
                     <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
                     <div class="col-sm-8">
                         <div class="row">
-                            <div class="col-sm-8 recipe__name">
-                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                            </div>                            
-                        </div>
-
-                        <div class="row">
                             <div class="col-sm-8 recipe__description">
                                 ${recipe.description}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br>
+                            <div class="col-sm-8 recipe__servings">
+                                Number of servings: ${recipe.servings}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row>
+                            
+                            <div class="col-sm-2 ingredients-header>Ingredients</div>
+                        </div>
+                        <div class="row">
+                            <br>
+                            <div class="col-sm-2 recipe__ingredient">
+                                <ul>
+                                    <li class="ingredient-name">${recipe.ingredient.name}</li>
                             </div>
                         </div>
                     </div>
