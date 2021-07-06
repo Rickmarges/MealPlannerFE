@@ -1,0 +1,99 @@
+.checked {
+    color: gold;
+    font-size: 20pt;
+  }
+
+.fa-star {
+    color: gold;
+    font-size: 20pt;
+}
+
+.fa-star-o {
+    color: gold;
+    size: 20px;
+}
+
+.mealtypes {
+    margin-left: 5px;
+    margin-right: 5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 11pt;
+}
+
+.new-recipe-label {
+    font-size: 11pt;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 5px;
+}
+
+input.input-recipe {
+    width: 300px;
+    height: 25px;
+}
+
+input.input-favorite {
+    height: 15px;
+    align-items: left;
+}
+
+input.input-mealtype {
+    height: 15px;
+    align-items: left;
+}
+
+input.search-input {
+    width: 200px;
+}
+
+#servings-input {
+    width: 300px;
+    height: 25px;
+}
+
+textarea {
+    width: 300px;
+    height: 100px;
+}
+
+h2 {
+    padding-top: 25px;
+    padding-bottom: 10px;
+}
+
+
+h4.recipe-title {
+    text-transform: uppercase;
+}
+
+h4.title {
+    text-transform: uppercase;
+}
+
+h2.page-title {
+    text-transform: uppercase;
+    font-size: 20pt;
+    font-weight: 600;
+}
+
+.menu-item {
+    text-transform: uppercase;
+    font-size: 15pt;
+    text-align: center;
+    margin-top: 25px;
+    font-weight: 600;
+}
+
+.nutrition {
+    margin-top: 10px;
+}
+
+.recipe-picture {
+    width: 300px;
+    height: 170px;
+}
+
+.ingredient-name {
+    text-transform: capitalize;
+}
