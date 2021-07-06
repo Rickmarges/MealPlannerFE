@@ -1,4 +1,6 @@
 
+const url = "https://mealplanner2.azurewebsites.net/"
+
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
@@ -29,7 +31,7 @@ function getAllRecipes() {
             })
         }
     }
-    xhr.open("get", "http://localhost:8082/allrecipes", true);
+    xhr.open("get", url + "allrecipes", true);
     xhr.send();
 }
 
@@ -66,7 +68,7 @@ function findRecipesByName() {
             })
         };
     }
-    xhr.open("get", "http://localhost:8082/findrecipesbyname/" + recipeName, true);
+    xhr.open("get", url + "findrecipesbyname/" + recipeName, true);
     xhr.send();
 
 }
@@ -103,7 +105,7 @@ function findRecipesByIngredient() {
             })
         }
     }
-    xhr.open("get", "http://localhost:8082/findrecipesbyingredient/" + ingredientName, true);
+    xhr.open("get", url + "findrecipesbyingredient/" + ingredientName, true);
     xhr.send();
 }
 
@@ -158,7 +160,7 @@ function getRecipeDetail() {
             `;
         }
     }
-    xhr.open("get", "http://localhost:8082/findrecipebyid/" + recipeIdParam, true);
+    xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
     xhr.send();
 
 }
@@ -200,7 +202,7 @@ function addRecipe() {
         console.log(this.responseText);
 
     }
-    xhr.open("post", "http://localhost:8082/addrecipe", true);
+    xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dejson);
 }
