@@ -1,5 +1,5 @@
 
-const url = "https://mealplanner2.azurewebsites.net/"
+const url = "http://localhost:8082/"
 
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
@@ -152,7 +152,7 @@ function getRecipeDetail() {
                             <br>
                             <div class="col-sm-2 recipe__ingredient">
                                 <ul>
-                                    <li class="ingredient-name">${recipe.ingredient.name}</li>
+                                    <li class="ingredient-name">${recipe.recipeIngredients.ingredient}</li>
                             </div>
                         </div>
                     </div>
