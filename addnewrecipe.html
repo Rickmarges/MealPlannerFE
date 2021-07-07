@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meal Planner</title>
+    <title>Add new recipe</title>
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -101,10 +101,20 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
+                <label class="new-recipe-label" for="recipe-picture-input">Picture url</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="recipe-picture-url-input" class="input-recipe"></input><br>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-3">
                 <label class="new-recipe-label" for="recipe-instructions-input">Recipe Instructions</label>
             </div>
             <div class="col-sm-3">
-                <textarea id="recipe-instructions-input" class="input-recipe"></textarea>
+                <textarea id="recipe-instructions-input" class="input_recipe"></textarea>
             </div>
         </div>
 
@@ -114,11 +124,11 @@
                 <label class="new-recipe-label" for="recipe-favorite-input">Favorite</label>
             </div>
             <div class="col-sm-3">
-                <input id="recipe-favorite-input" type="checkbox" class="input-favorite">
+                <input id="recipe-favorite-input" type="checkbox" class="input_recipe input-favorite">
             </div>
         </div>
 
-        <div class="row">
+         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
                 <label class="new-recipe-label" for="recipe-rating">Rating</label>
@@ -138,9 +148,9 @@
                 <h5 class="new-recipe-label">Meal Types</h5>
             </div>
             <div class="col-sm-3">
-                <input id="recipe-mealtype-input-breakfast" name="mealtypes" type="checkbox" value="breakfast" class="input-mealtype"><label for="recipe-mealtype-input-breakfast" class="mealtypes"> Breakfast</label>
-                <input id="recipe-mealtype-input-lunch" name="mealtypes" type="checkbox" value="lunch" class="input-mealtype"><label for="recipe-mealtype-input-lunch" class="mealtypes"> Lunch</label>
-                <input id="recipe-mealtype-input-dinner" name="mealtypes" type="checkbox" value="dinner" class="input-mealtype"><label for="recipe-mealtype-input-dinner" class="mealtypes"> Dinner</label>
+                <input id="recipe-mealtype-input-breakfast" name="mealtypes" type="checkbox" value="breakfast" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-breakfast" class="mealtypes"> Breakfast</label>
+                <input id="recipe-mealtype-input-lunch" name="mealtypes" type="checkbox" value="lunch" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-lunch" class="mealtypes"> Lunch</label>
+                <input id="recipe-mealtype-input-dinner" name="mealtypes" type="checkbox" value="dinner" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-dinner" class="mealtypes"> Dinner</label>
             </div>
         </div>
 
@@ -157,7 +167,7 @@
                 <label class="new-recipe-label" for="net-carbs">Net Carbs</label>
             </div>
             <div class="col-sm-3">
-                <input id="net-carbs" name="nutrition-values-per-serving" type="number" class="input-recipe">
+                <input id="net-carbs" name="nutrition-values-per-serving" type="number" class="input_recipe">
             </div>
         </div>
 
@@ -167,7 +177,7 @@
                 <label class="new-recipe-label" for="carbs">Carbs</label>
             </div>
             <div class="col-sm-3">
-                <input id="carbs" name="nutrition-values-per-serving" type="number" class="input-recipe">
+                <input id="carbs" name="nutrition-values-per-serving" type="number" class="input_recipe">
             </div>
         </div>
 
@@ -177,7 +187,7 @@
                 <label class="new-recipe-label" for="fats">Fats</label>
             </div>
             <div class="col-sm-3">
-                <input id="fats" name="nutrition-values-per-serving" type="number" class="input-recipe">
+                <input id="fats" name="nutrition-values-per-serving" type="number" class="input_recipe">
             </div>
         </div>
 
@@ -187,7 +197,7 @@
                 <label class="new-recipe-label" for="protein">Protein</label>
             </div>
             <div class="col-sm-3">
-                <input id="protein" name="nutrition-values-per-serving" type="number" class="input-recipe">
+                <input id="protein" name="nutrition-values-per-serving" type="number" class="input_recipe">
             </div>
         </div>
 
@@ -197,14 +207,14 @@
                 <label class="new-recipe-label" for="calories">Calories</label>
             </div>
             <div class="col-sm-3">
-                <input id="calories" name="nutrition-values-per-serving" type="number" class="input-recipe">
+                <input id="calories" name="nutrition-values-per-serving" type="number" class="input_recipe">
             </div>
-        </div>
-
+        </div> -->
+        <br>
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
-                <button class="btn btn-info" onclick="addRecipe()">ADD RECIPE</button>
+                <button class="btn btn-info search" onclick="addRecipe()">Save recipe and add ingredients</button>
             </div>
         </div>
     </form>

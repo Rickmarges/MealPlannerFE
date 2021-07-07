@@ -128,36 +128,53 @@ function getRecipeDetail() {
                         <h2 class="page-title">${recipe.name}</h2>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
                     <div class="col-sm-8">
+                        
                         <div class="row">
                             <div class="col-sm-8 recipe__description">
                                 ${recipe.description}
                             </div>
                         </div>
+
                         <div class="row">
                             <br>
                             <div class="col-sm-8 recipe__servings">
                                 Number of servings: ${recipe.servings}
                             </div>
                         </div>
-                        <br>
-                        <div class="row>
-                            
-                            <div class="col-sm-2 ingredients-header>Ingredients</div>
-                        </div>
-                        <div class="row">
-                            <br>
-                            <div class="col-sm-2 recipe__ingredient">
-                                <ul>
-                                    <li class="ingredient-name">${recipe.recipeIngredients.ingredient}</li>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
+        
+                <div class="row">
+                    <br>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-10">Ingredients</div>
+                    <br>
+                    <br>
+                </div>
             `;
+            var recipeIngredients = recipe.recipeIngredients;
+            recipeIngredients.forEach(recipeIngredient => {
+                var ingredient = recipeIngredient.ingredient;
+                console.log(ingredient.name)
+                //document.getElementById("ingredients")
+                document.getElementById("ingredients-list").innerHTML +=
+                    `
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4 recipe__ingredients">
+                            <ul>
+                                <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unitPrefix} ${ingredient.name}</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            })
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
@@ -166,6 +183,26 @@ function getRecipeDetail() {
 }
 
 function addRecipe() {
+    var recipe = {};
+    recipe.name = document.getElementById('recipe-name-input').value;
+    recipe.servings = document.getElementById('servings-input').value;
+    recipe.description = document.getElementById('recipe-description-input').value;
+    recipe.picture = document.getElementById('recipe-picture-url-input').value;
+    recipe.recipeIngredients = null;
+
+
+    var recipejson = JSON.stringify(recipe);
+    console.log(recipejson);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        console.log(this.responseText);
+    }
+    xhr.open("post", url + "addrecipe", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(recipejson);
+}
+
+function addRecipe1() {
     var b = {};
 
     var a = {
@@ -195,6 +232,7 @@ function addRecipe() {
     b.nutritionValuesPerServing.fats = 30.0;
     b.nutritionValuesPerServing.protein = 60.0;
     b.nutritionValuesPerServing.calories = 250.0;
+
     var dejson = JSON.stringify(b);
     console.log(dejson);
     var xhr = new XMLHttpRequest();
