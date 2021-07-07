@@ -96,7 +96,7 @@ function findRecipesByName() {
 function findRecipesByIngredient() {
     var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
     console.log(ingredientName);
-    if (recipeName == "") {
+    if (ingredientName == "") {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
