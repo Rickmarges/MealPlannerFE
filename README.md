@@ -1,4 +1,4 @@
-# MealPlannerFE
+# MealPlanner Front end
 
 [![Azure Static Web Apps CI/CD](https://github.com/Rickmarges/MealPlannerFE/actions/workflows/azure-static-web-apps-ambitious-tree-0d2dbd703.yml/badge.svg)](https://github.com/Rickmarges/MealPlannerFE/actions/workflows/azure-static-web-apps-ambitious-tree-0d2dbd703.yml)
 
