@@ -1,5 +1,5 @@
 // The url to the backend application
-const url = "https://mealplanner2.azurewebsites.net/"
+const url = "http://localhost:8082/"
 
 // Add an eventlistener to the name input field, to search on enter press
 const nameInput = document.getElementById('search-recipe-by-name');
@@ -96,14 +96,17 @@ function findRecipesByName() {
 function findRecipesByIngredient() {
     var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
     console.log(ingredientName);
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            console.log(this.responseText);
-            var recipes = JSON.parse(this.responseText);
-            document.getElementById("recipe-result").innerHTML = "";
-            recipes.forEach(recipe => {
-                document.getElementById("recipe-result").innerHTML += `<br>
+    if (ingredientName == "") {
+        getAllRecipes();
+    } else {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                console.log(this.responseText);
+                var recipes = JSON.parse(this.responseText);
+                document.getElementById("recipe-result").innerHTML = "";
+                recipes.forEach(recipe => {
+                    document.getElementById("recipe-result").innerHTML += `<br>
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
@@ -122,11 +125,12 @@ function findRecipesByIngredient() {
                     </div>
                 </div>
             `;
-            })
+                })
+            }
         }
+        xhr.open("get", url + "findrecipesbyingredient/" + ingredientName, true);
+        xhr.send();
     }
-    xhr.open("get", url + "findrecipesbyingredient/" + ingredientName, true);
-    xhr.send();
 }
 
 function getRecipeDetail() {
