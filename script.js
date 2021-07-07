@@ -117,9 +117,10 @@ function findRecipesByIngredient() {
                             </div>                            
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-8 recipe__description">
-                                ${recipe.description}
+                            <div class="row">
+                                <div class="col-sm-8 recipe__description">
+                                    ${recipe.description}
+                                </div>
                             </div>
                         </div>
                     </div>
