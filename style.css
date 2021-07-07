@@ -94,6 +94,11 @@ h2.page-title {
     height: 170px;
 }
 
-.ingredient-name {
-    text-transform: capitalize;
+li.ingredient-name {
+    text-transform:lowercase;
+    margin-bottom: 0%;
+}
+
+.search {
+    text-transform: uppercase;
 }
