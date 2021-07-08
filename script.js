@@ -1,5 +1,5 @@
 // The url to the backend application
-const url = "http://localhost:8082/"
+const url = "https://mealplanner2.azurewebsites.net/"
 
 // Add an eventlistener to the name input field, to search on enter press
 const nameInput = document.getElementById('search-recipe-by-name');
@@ -29,8 +29,8 @@ function getAllRecipes() {
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-7">
                         <div class="row">
                             <div class="col-sm-8 recipe__name">
                                 <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
@@ -52,12 +52,8 @@ function getAllRecipes() {
     xhr.send();
 }
 
-function findRecipesByName(recipe) {
-    if (recipe == "") {
-        var recipeName = document.getElementById("search-recipe-by-name").value;
-        console.log(recipeName);
-    }
-    if (recipeName == "") {
+function findRecipesByName(recipeName = "") {
+    if (isEmptyOrSpaces(recipeName)) {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
@@ -71,8 +67,8 @@ function findRecipesByName(recipe) {
                     <br>
                     <div class="row">
                         <div class="col-sm-2"></div>
-                        <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                        <div class="col-sm-7">
                             <div class="row">
                                 <div class="col-sm-8 recipe__name">
                                     <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
@@ -98,7 +94,7 @@ function findRecipesByName(recipe) {
 function findRecipesByIngredient() {
     var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
     console.log(ingredientName);
-    if (ingredientName == "") {
+    if (isEmptyOrSpaces(ingredientName)) {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
@@ -109,29 +105,26 @@ function findRecipesByIngredient() {
                 document.getElementById("recipe-result").innerHTML = "";
                 recipes.forEach(recipe => {
                     document.getElementById("recipe-result").innerHTML += `<br>
-                <div class="row">
-
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    
-                    <div class="col-sm-8">
-                        
-                    <div class="row">
-                            <div class="col-sm-8 recipe__name">
-                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                            </div>                            
-                        </div>
-                        
                         <div class="row">
-                            <div class="col-sm-8 recipe__description">
-                                 ${recipe.description}
-                            </div>
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                            
+                            <div class="col-sm-8">
+                                
+                                <div class="row">
+                                    <div class="col-sm-8 recipe__name">
+                                        <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                                    </div>                            
+                                 </div>
+                        
+                                <div class="row">
+                                     <div class="col-sm-8 recipe__description">
+                                        ${recipe.description}
+                                    </div>
+                                </div>
+                             </div>
                         </div>
-
-                    </div>
-
-                </div>
-                `;
+                    `;
                 })
             }
         }
@@ -162,8 +155,8 @@ function getRecipeDetail() {
 
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-7">
                         
                         <div class="row">
                             <div class="col-sm-8 recipe__description">
@@ -204,13 +197,12 @@ function getRecipeDetail() {
                             </ul>
                         </div>
                     </div>
-                `
+                `;
             })
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
     xhr.send();
-
 }
 
 function addRecipe() {
@@ -219,60 +211,63 @@ function addRecipe() {
     recipe.servings = document.getElementById('servings-input').value;
     recipe.description = document.getElementById('recipe-description-input').value;
     recipe.picture = document.getElementById('recipe-picture-url-input').value;
-    recipe.recipeIngredients = null;
-
+    recipe.recipeIngredients = [];
 
     var recipejson = JSON.stringify(recipe);
-    console.log(recipejson);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        console.log(this.responseText);
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var newRecipe = JSON.parse(this.responseText);
+            console.log(this.responseText);
+            addIngredients(newRecipe);
+        }
     }
     xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(recipejson);
-    addIngredients(recipe.name);
 }
 
-function addIngredients(recipeName) {
-    var newRecipe = findRecipesByName(recipeName);
-    var recipeId = newRecipe.id;
-    document.getElementById('new_recipe').innerHTML = `
-    <br>
+function addIngredients(newRecipe) {
+    document.getElementById('new-recipe').innerHTML = `
+        <br>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <h2 class="page-title">${newRecipe.name}</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2"><img src="${newRecipe.picture}" class="recipe-picture"></div>
+            <div class="col-sm-8">
+                
                 <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <h2 class="page-title">${newRecipe.name}</h2>
+                    <div class="col-sm-8 recipe__description">
+                        ${newRecipe.description}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${newRecipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-8">
-                        
-                        <div class="row">
-                            <div class="col-sm-8 recipe__description">
-                                ${newRecipe.description}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <br>
-                            <div class="col-sm-8 recipe__servings">
-                                Number of servings: ${newRecipe.servings}
-                            </div>
-                        </div>
-
+                    <br>
+                    <div class="col-sm-8 recipe__servings">
+                        Number of servings: ${newRecipe.servings}
                     </div>
                 </div>
+
+            </div>
+        </div>
         
-                <div class="row">
-                    <br>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-10">Ingredients</div>
-                    <br>
-                    <br>
-                </div>`
+        <div class="row">
+            <br>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">Ingredients</div>
+            <br>
+            <br>
+        </div>
+    `;
+}
 
+function isEmptyOrSpaces(str) {
+    return str === null || str.match(/^ *$/) !== null;
 }
