@@ -1,5 +1,5 @@
 // The url to the backend application
-const url = "https://mealplanner2.azurewebsites.net/"
+const url = "http://localhost:8082/"
 
 // Add an eventlistener to the name input field, to search on enter press
 const nameInput = document.getElementById('search-recipe-by-name');
@@ -107,15 +107,15 @@ function findRecipesByIngredient() {
                 document.getElementById("recipe-result").innerHTML = "";
                 recipes.forEach(recipe => {
                     document.getElementById("recipe-result").innerHTML += `<br>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-sm-8 recipe__name">
-                                    <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                                </div>                            
-                            </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8 recipe__name">
+                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                            </div>                            
+                        </div>
 
                             <div class="row">
                                 <div class="col-sm-8 recipe__description">
@@ -124,7 +124,8 @@ function findRecipesByIngredient() {
                             </div>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
                 })
             }
         }
