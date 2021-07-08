@@ -300,7 +300,7 @@ function getAllIngredients(newRecipe) {
             `;
             ingredients.forEach(ingredient => {
                 document.getElementById("ingredientList").innerHTML += `
-                    <option value='${ingredient.name}' class="ingredient-list"></option>
+                    <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
                 `;
             })
         }
@@ -316,27 +316,10 @@ function addIngredients() {
     recipeIngredient.amount = document.getElementById("ingredient-amount").value;
     recipeIngredient.unit_prefix = document.getElementById('ingredient-unit').value;
     recipeIngredient.recipe_id = recipeIdParam;
-    recipeIngredient.ingredient_id = getIngredientId(document.getElementById("ingredientList-input").value);
+    ingredient = document.getElementById("ingredientList-input").value;
+    ingredientId = ingredient.split(".")[0]
+    recipeIngredient.ingredient_id = ingredientId;
     console.log(recipeIngredient);
-}
-
-function getIngredientId(ingredientName) {
-    var xhr = new XMLHttpRequest();
-    var ingredientId;
-    console.log("finding ingredient with name " + ingredientName)
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            var ingredients = JSON.parse(this.responseText);
-
-            ingredients.forEach(ingredient => {
-                ingredientId = ingredient.id;
-                console.log(ingredientId)
-                return ingredientId;
-            })
-        }
-    }
-    xhr.open("get", url + "findingredientsbyname/" + ingredientName, true);
-    xhr.send();
 }
 
 function isEmptyOrSpaces(str) {
