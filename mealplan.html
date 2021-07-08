@@ -16,17 +16,19 @@
             const urlParams = new URLSearchParams(queryString);
             const mealPlanId = urlParams.get('id');
             console.log(mealPlanId);
-            //getRequest(detailsMealPlan, "nogtebepalen/"+mealPlanId);
-            detailsMealPlan();
+            getRequest(detailsMealPlan, "findmealplanbyid/"+mealPlanId);
+          //  detailsMealPlan();
         }
-        function detailsMealPlan(){
+        function detailsMealPlan(mealPlan){
             console.log("in detailsMealplan");
-            var startdate = new Date('7/11/2010');
-            var enddate = new Date('7/15/2010');
+            var startdate = new Date(mealPlan.start);
+            var enddate = new Date(mealPlan.end);
             const diffTime = Math.abs(enddate - startdate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             console.log(diffDays);
-            for(var x = 0; x < diffDays; x++){
+            gebi("van").innerHTML = mealPlan.start;
+            gebi("tot").innerHTML = mealPlan.end;
+            for(var x = 0; x < diffDays +1; x++){
                 gebi("lijstMealsOfMealPlan").innerHTML += "een meal<br>"
             }
         }
@@ -34,7 +36,8 @@
 </head>
 
 <body>
-hoi
+Van<span id="van"></span>
+Tot<span id="tot"></span>
 <div id=lijstMealsOfMealPlan>
 
 </div>
