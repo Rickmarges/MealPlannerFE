@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meal Planner</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="trialsfelix.js"></script>
+
+    <script>
+        window.onload = getIdMealPlan;
+        function getIdMealPlan(){
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const mealPlanId = urlParams.get('id');
+            console.log(mealPlanId);
+            //getRequest(detailsMealPlan, "nogtebepalen/"+mealPlanId);
+            detailsMealPlan();
+        }
+        function detailsMealPlan(){
+            console.log("in detailsMealplan");
+            var startdate = new Date('7/11/2010');
+            var enddate = new Date('7/15/2010');
+            const diffTime = Math.abs(enddate - startdate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            console.log(diffDays);
+            for(var x = 0; x < diffDays; x++){
+                gebi("lijstMealsOfMealPlan").innerHTML += "een meal<br>"
+            }
+        }
+    </script>
+</head>
+
+<body>
+hoi
+<div id=lijstMealsOfMealPlan>
+
+</div>
+</body>
+
+</html>
