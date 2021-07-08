@@ -10,14 +10,24 @@
     <script>
         var baseUrl = "http://localhost:8082";
         function toonAlleMealPlans(){
+            getRequest(printAllMealPlans, "allmealplans");
+        }
+        function getRequest(callback, url){
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
-                console.log(this.responseText);
-                var recipes = JSON.parse(this.responseText);
-//                recipes.forEach(element => document.getElementById("recipe-name").innerHTML += "<br>"+element.naam);
+//                console.log(this.responseText);
+                if(this.readyState == 4){
+                    var result = JSON.parse(this.responseText);
+                    printAllMealPlans(result);
+                }
             }
-            xhr.open("get", baseUrl+"/allerecepten/", true);
+            xhr.open("get", baseUrl+"/"+url, true);
             xhr.send();
+        }
+        function printAllMealPlans(mealPlans){
+            gebi("toonMealplans").innerHTML ="";
+            console.log(mealPlans);
+            mealPlans.forEach(element => gebi("toonMealplans").innerHTML += "<br>"+element.start);
         }
         function maakMealPlanAan(){
             var mealPlan = {};
