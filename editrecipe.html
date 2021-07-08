@@ -17,7 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-<body onload="getRecipeDetail()">
+<body onload="getRecipeDetailForEdit(); getAllIngredients()">
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-2">
@@ -39,10 +39,33 @@
 
     <div id="recipe-detail"></div>
     <div id="ingredient-list">
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-5">
+                <table class="table">
+                    <tr>
+                        <th>Amount</th>
+                        <th>Unit</th>
+                        <th>Ingredient</th>
+                    </tr>
+                    <tr>
+                        <td><input class="input-amount" id="ingredient-amount" type="number"></td>
+                        <td><select class="input-unit" id="ingredient-unit">
+                                <option value="gr">gr</option>
+                                <option value="ml">ml</option>
+                                <option value="tbsp">tbsp</option>
+                                <option value="tsp">tsp</option>
+                                <option value="cup">cup</option>
+                            </select></td>
+                        <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+                            <datalist id='ingredientList'></datalist>
+                            <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
+                        </td>
+                    </tr>
+                </table>
 
-
-
-
+            </div>
+        </div>
 
     </div>
     <script src="./script.js"></script>
