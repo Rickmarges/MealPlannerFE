@@ -44,71 +44,71 @@
             <h2 class="page-title">Add new recipe</h2>
         </div>
     </div>
+    <div id="new-recipe">
+        <form>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <label class="new-recipe-label" for="recipe-name-input">Recipe Name</label>
+                </div>
+                <div class="col-sm-3">
+                    <input id="recipe-name-input" class="input-recipe">
+                </div>
+            </div>
 
-    <form>
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="recipe-name-input">Recipe Name</label>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <label class="new-recipe-label" for="servings-input"># Servings</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="number" list="servings" id="servings-input" class="input-recipe">
+                    <datalist id="servings" class="input-recipe" name="servings">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                    </datalist>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <input id="recipe-name-input" class="input-recipe">
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="servings-input"># Servings</label>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <label class="new-recipe-label" for="recipe-description-input">Recipe Description</label>
+                </div>
+                <div class="col-sm-3">
+                    <textarea id="recipe-description-input" class="input-recipe"></textarea><br>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <input type="number" list="servings" id="servings-input">
-                <datalist id="servings" class="input-recipe" name="servings">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                </datalist>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="recipe-description-input">Recipe Description</label>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <label class="new-recipe-label" for="recipe-picture-input">Picture url</label>
+                </div>
+                <div class="col-sm-3">
+                    <input id="recipe-picture-url-input" class="input-recipe"></input><br>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <textarea id="recipe-description-input" class="input-recipe"></textarea><br>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="recipe-picture-input">Picture url</label>
-            </div>
-            <div class="col-sm-3">
-                <input id="recipe-picture-url-input" class="input-recipe"></input><br>
-            </div>
-        </div>
-
-        <!-- <div class="row">
+            <!-- <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
                 <label class="new-recipe-label" for="recipe-instructions-input">Recipe Instructions</label>
@@ -210,14 +210,15 @@
                 <input id="calories" name="nutrition-values-per-serving" type="number" class="input_recipe">
             </div>
         </div> -->
-        <br>
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <button class="btn btn-info search" onclick="addRecipe()">Save recipe and add ingredients</button>
+            <br>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <button class="btn btn-info search" onclick="addRecipe()">Save recipe and add ingredients</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
     <script src="./script.js"></script>
 
 </body>

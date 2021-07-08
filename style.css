@@ -27,7 +27,7 @@ body {
     margin: 5px;
 }
 
-input.input-recipe #servings-input{
+input.input-recipe {
     width: 300px;
     height: 25px;
 }
