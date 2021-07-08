@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="private">
+    <title>Recipes</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body onload="getAllRecipes()">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2">
+            <a href="./index.html" class="menu-item">Home</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="./allrecipes.html" class="menu-item">Recipes</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="./index.html" class="menu-item">Meal Planner</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="./index.html" class="menu-item">My Plans</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="./index.html" class="menu-item">Account</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <h2 class="page-title">Recipes</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3 search">
+            <h4 class="title">Search recipes by name</h4>
+
+            <input id="search-recipe-by-name" class="search-input">
+            <button class="btn btn-info search" onclick="findRecipesByName()">Search Recipes</button>
+        </div>
+        <div class="col-sm-3 search">
+            <h4 class="title">Search recipes by ingredient</h4>
+
+            <input id="search-recipe-by-ingredient" class="search-input">
+            <button class="btn btn-info search" onclick="findRecipesByIngredient()">Search Recipes</button>
+        </div>
+        <div class="col-sm-3 search">
+            <h4 class="title">Add new recipe</h4>
+
+            <input class="btn btn-info search" type="submit" id="add-new-recipe" value="Add new recipe" onclick="window.location.href='./addnewrecipe.html';"></button>
+        </div>
+    </div>
+
+    <div id="recipe-result"></div>
+    <script src=" ./script.js">
+    </script>
+</body>
+
+</html>

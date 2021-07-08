@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('userid');
+            console.log(myParam);
+        }
+
+
+    </script>
+    <style>
+        .huppakee {
+            background-color: green;
+        }
+    </style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <table class="table table-striped">
+        <tr>
+            <th>Maandag</th>
+            <th>Dinsdag</th>
+            <th>Woensdag</th>
+        </tr>
+        <tr>
+            <td>Maandag</td>
+            <td>Dinsdag</td>
+            <td>Woensdag</td>
+        </tr>
+        <tr>
+            <td>Maandag</td>
+            <td>Dinsdag</td>
+            <td>Woensdag</td>
+        </tr>
+        <tr>
+            <td>Maandag</td>
+            <td>Dinsdag</td>
+            <td>Woensdag</td>
+        </tr>
+
+    </table>
+    <button class="btn btn-primary">Start</button>
+    <div class="row">
+        <div class="col-sm-2">Hallo</div>
+        <div class="col-sm-6">Felix</div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12 huppakee">Hoe gaat het?</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">Hoe gaat het?</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-2"><a href="${recipe.picture}" class="recipe-picture"></a></div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-3 recipe__name">
+                <h4 class="recipe-title">${recipe.name}</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3 recipe__description">
+                ${recipe.description}
+            </div>
+        </div>
+    </div>
+</div>
