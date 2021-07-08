@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meal Planner</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script>
+        function toonAlleRecepten(){
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                console.log(this.responseText);
+                var recipes = JSON.parse(this.responseText);
+                document.getElementById("recipe-name").innerHTML = "";
+                recipes.forEach(element => document.getElementById("recipe-name").innerHTML += "<br>"+element.naam);
+            }
+            xhr.open("get", "http://localhost:8082/allerecepten/", true);
+            xhr.send();
+        }
+
+    </script>
+</head>
+
+<body>
+
+
+
+
+
+    
+    <button onclick=toonAlleRecepten()>toonalles</button>
+
+    <div id="recipe-name"></div>
+</body>
+
+</html>
