@@ -52,7 +52,7 @@ function getAllRecipes() {
     xhr.send();
 }
 
-function findRecipesByName(recipe) {
+function findRecipesByName(recipe = "") {
     if (recipe == "") {
         var recipeName = document.getElementById("search-recipe-by-name").value;
         console.log(recipeName);
@@ -204,7 +204,7 @@ function getRecipeDetail() {
                             </ul>
                         </div>
                     </div>
-                `
+                `;
             })
         }
     }
@@ -219,7 +219,7 @@ function addRecipe() {
     recipe.servings = document.getElementById('servings-input').value;
     recipe.description = document.getElementById('recipe-description-input').value;
     recipe.picture = document.getElementById('recipe-picture-url-input').value;
-    recipe.recipeIngredients = null;
+    recipe.recipeIngredients = [];
 
 
     var recipejson = JSON.stringify(recipe);
@@ -231,7 +231,7 @@ function addRecipe() {
     xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(recipejson);
-    addIngredients(recipe.name);
+    //addIngredients(recipe.name);
 }
 
 function addIngredients(recipeName) {
@@ -239,40 +239,41 @@ function addIngredients(recipeName) {
     var recipeId = newRecipe.id;
     document.getElementById('new_recipe').innerHTML = `
     <br>
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <h2 class="page-title">${newRecipe.name}</h2>
-                    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-6">
+            <h2 class="page-title">${newRecipe.name}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"><img src="${newRecipe.picture}" class="recipe-picture"></div>
+        <div class="col-sm-8">
+            
+            <div class="row">
+                <div class="col-sm-8 recipe__description">
+                    ${newRecipe.description}
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${newRecipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-8">
-                        
-                        <div class="row">
-                            <div class="col-sm-8 recipe__description">
-                                ${newRecipe.description}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <br>
-                            <div class="col-sm-8 recipe__servings">
-                                Number of servings: ${newRecipe.servings}
-                            </div>
-                        </div>
-
-                    </div>
+            <div class="row">
+                <br>
+                <div class="col-sm-8 recipe__servings">
+                    Number of servings: ${newRecipe.servings}
                 </div>
-        
-                <div class="row">
-                    <br>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-10">Ingredients</div>
-                    <br>
-                    <br>
-                </div>`
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">Ingredients</div>
+        <br>
+        <br>
+    </div>
+    `;
 
 }
