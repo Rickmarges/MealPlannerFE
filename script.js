@@ -1,5 +1,5 @@
 // The url to the backend application
-const url = "http://localhost:8082/"
+const url = "https://mealplanner2.azurewebsites.net/"
 
 // Add an eventlistener to the name input field, to search on enter press
 const nameInput = document.getElementById('search-recipe-by-name');
