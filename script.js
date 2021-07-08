@@ -52,9 +52,7 @@ function getAllRecipes() {
     xhr.send();
 }
 
-function findRecipesByName() {
-    var recipeName = document.getElementById("search-recipe-by-name").value;
-    console.log(recipeName);
+function findRecipesByName(recipeName = "") {
     if (isEmptyOrSpaces(recipeName)) {
         getAllRecipes();
     } else {
@@ -213,24 +211,24 @@ function addRecipe() {
     recipe.servings = document.getElementById('servings-input').value;
     recipe.description = document.getElementById('recipe-description-input').value;
     recipe.picture = document.getElementById('recipe-picture-url-input').value;
-    recipe.recipeIngredients = null;
+    recipe.recipeIngredients = [];
 
     var recipejson = JSON.stringify(recipe);
-    console.log(recipejson);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        console.log(this.responseText);
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var newRecipe = JSON.parse(this.responseText);
+            console.log(this.responseText);
+            addIngredients(newRecipe);
+        }
     }
     xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(recipejson);
-    addIngredients(recipe.name);
 }
 
-function addIngredients(recipeName) {
-    var newRecipe = findRecipesByName(recipeName);
-    var recipeId = newRecipe.id;
-    document.getElementById('new_recipe').innerHTML = `
+function addIngredients(newRecipe) {
+    document.getElementById('new-recipe').innerHTML = `
         <br>
         <div class="row">
             <div class="col-sm-2"></div>
