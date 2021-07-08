@@ -29,8 +29,8 @@ function getAllRecipes() {
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-7">
                         <div class="row">
                             <div class="col-sm-8 recipe__name">
                                 <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
@@ -55,7 +55,7 @@ function getAllRecipes() {
 function findRecipesByName() {
     var recipeName = document.getElementById("search-recipe-by-name").value;
     console.log(recipeName);
-    if (recipeName == "") {
+    if (isEmptyOrSpaces(recipeName)) {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
@@ -69,8 +69,8 @@ function findRecipesByName() {
                     <br>
                     <div class="row">
                         <div class="col-sm-2"></div>
-                        <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                        <div class="col-sm-7">
                             <div class="row">
                                 <div class="col-sm-8 recipe__name">
                                     <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
@@ -96,7 +96,7 @@ function findRecipesByName() {
 function findRecipesByIngredient() {
     var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
     console.log(ingredientName);
-    if (ingredientName == "") {
+    if (isEmptyOrSpaces(ingredientName)) {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
@@ -109,8 +109,8 @@ function findRecipesByIngredient() {
                     document.getElementById("recipe-result").innerHTML += `<br>
                     <div class="row">
                         <div class="col-sm-2"></div>
-                        <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                        <div class="col-sm-7">
                             <div class="row">
                                 <div class="col-sm-8 recipe__name">
                                     <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
@@ -155,8 +155,8 @@ function getRecipeDetail() {
 
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-7">
                         
                         <div class="row">
                             <div class="col-sm-8 recipe__description">
@@ -267,4 +267,8 @@ function addRecipe1() {
     xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dejson);
+}
+
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
 }
