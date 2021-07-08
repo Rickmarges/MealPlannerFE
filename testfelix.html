@@ -8,16 +8,35 @@
     <title>Meal Planner</title>
     <link rel="stylesheet" href="./style.css" />
     <script>
-        function toonAlleRecepten(){
+        var baseUrl = "http://localhost:8082";
+        function toonAlleMealPlans(){
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 console.log(this.responseText);
                 var recipes = JSON.parse(this.responseText);
-                document.getElementById("recipe-name").innerHTML = "";
-                recipes.forEach(element => document.getElementById("recipe-name").innerHTML += "<br>"+element.naam);
+//                recipes.forEach(element => document.getElementById("recipe-name").innerHTML += "<br>"+element.naam);
             }
-            xhr.open("get", "http://localhost:8082/allerecepten/", true);
+            xhr.open("get", baseUrl+"/allerecepten/", true);
             xhr.send();
+        }
+        function maakMealPlanAan(){
+            var mealPlan = {};
+            mealPlan.start = gebi("startdate").value;
+            mealPlan.end = gebi("enddate").value;
+            mealPlanJSON = JSON.stringify(mealPlan);
+            postObject(mealPlanJSON, "addmealplan");
+        }
+        function postObject(objJSON, url){
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                console.log(this.responseText);
+            }
+            xhr.open("post", baseUrl+"/"+url, true);
+            xhr.setRequestHeader("Content-Type","application/json");
+            xhr.send(objJSON);            
+        }
+        function gebi(id){
+            return document.getElementById(id);
         }
 
     </script>
@@ -30,9 +49,18 @@
 
 
     
-    <button onclick=toonAlleRecepten()>toonalles</button>
+    <button onclick=toonAlleMealPlans()>toonAlleMealPlans</button>
 
     <div id="recipe-name"></div>
+    <hr>
+    startdate<input type="date" id="startdate" type=text><br>
+    enddate<input type="date" id="enddate" type=text><br>
+    <button onclick=maakMealPlanAan()>Maak MealPlan</button>
+    <hr>
+    <button onclick=toonAlleMealPlans()>Toon Alle Mealplans</button>
+    <div id=toonMealplans>
+        De mealplans
+    </div>
 </body>
 
 </html>
