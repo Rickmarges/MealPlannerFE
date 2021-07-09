@@ -5,7 +5,7 @@ const url = "http://localhost:8082/"
 const nameInput = document.getElementById('search-recipe-by-name');
 if (nameInput != null) {
     nameInput.addEventListener("keyup", function (event) {
-        findRecipesByName();
+        findRecipesByName(nameInput.value);
     });
 }
 
@@ -13,7 +13,7 @@ if (nameInput != null) {
 const ingredientInput = document.getElementById('search-recipe-by-ingredient');
 if (ingredientInput != null) {
     ingredientInput.addEventListener("keyup", function (event) {
-        findRecipesByIngredient();
+        findRecipesByIngredient(ingredientInput.value);
     });
 }
 
@@ -54,6 +54,7 @@ function getAllRecipes() {
 
 
 function findRecipesByName(recipeName = "") {
+    console.log(recipeName);
     if (isEmptyOrSpaces(recipeName)) {
         getAllRecipes();
     } else {
