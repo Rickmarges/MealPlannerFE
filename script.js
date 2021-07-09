@@ -209,7 +209,6 @@ function getRecipeDetail() {
 function getRecipeDetailForEdit() {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
-    console.log(recipeIdParam);
 
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
@@ -269,19 +268,18 @@ function addRecipe() {
     recipe.picture = document.getElementById('recipe-picture-url-input').value;
     recipe.recipeIngredients = [];
 
-    var recipejson = JSON.stringify(recipe);
+    var recipeJson = JSON.stringify(recipe);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var newRecipe = JSON.parse(this.responseText);
-            console.log("hello");
             window.location.href = "./editrecipe.html?id=" + newRecipe.id;
             getRecipeDetailForEdit(newRecipe);
         }
     }
     xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(recipejson);
+    xhr.send(recipeJson);
 
 }
 
@@ -291,10 +289,26 @@ function getAllIngredients(newRecipe) {
     console.log(recipeIdParam);
     // window.location.href = "./editrecipe.html?id=" + newRecipe.id;
     var xhr = new XMLHttpRequest();
-    console.log("in add ingredient")
+    console.log("in get ingredient")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var ingredients = JSON.parse(this.responseText);
+            document.getElementById("table-add-ingredients").innerHTML = `
+            <tr>
+            <td><input class="input-amount" id="ingredient-amount" type="number"></td>
+                <td><select class="input-unit" id="ingredient-unit">
+                        <option value="gr">gr</option>
+                        <option value="ml">ml</option>
+                        <option value="tbsp">tbsp</option>
+                        <option value="tsp">tsp</option>
+                        <option value="cup">cup</option>
+                    </select></td>
+                <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+                    <datalist id='ingredientList'></datalist>
+                    <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
+                </td>
+            <tr>
+            `
             document.getElementById("ingredientList").innerHTML = `
                 <option value="ADD NEW INGREDIENT TO DATABASE"></option>
             `;
@@ -313,13 +327,36 @@ function addIngredients() {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
     recipeIngredient = {}
-    recipeIngredient.amount = document.getElementById("ingredient-amount").value;
-    recipeIngredient.unit_prefix = document.getElementById('ingredient-unit').value;
-    recipeIngredient.recipe_id = recipeIdParam;
+    recipeIngredient.amount = parseInt(document.getElementById("ingredient-amount").value);
+    unitPrefix = document.getElementById("ingredient-unit").value;
+    recipeIngredient.unitPrefix = unitPrefix.toUpperCase();
+    recipeIngredient.recipe = {};
+    recipeIngredient.recipe.id = parseInt(recipeIdParam);
     ingredient = document.getElementById("ingredientList-input").value;
-    ingredientId = ingredient.split(".")[0]
-    recipeIngredient.ingredient_id = ingredientId;
+    ingredientId = ingredient.split(".")[0];
+    ingredientName = ingredient.split(". ")[1];
+    recipeIngredient.ingredient = {};
+    recipeIngredient.ingredient.id = parseInt(ingredientId);
     console.log(recipeIngredient);
+
+    var recipeIngredientJson = JSON.stringify(recipeIngredient);
+    console.log(recipeIngredientJson);
+    var xhr = new XMLHttpRequest();
+    console.log("in add ingredient");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            document.getElementById("added-ingredients").innerHTML += `
+            <tr>
+                <td>${recipeIngredient.amount}</td>
+                <td>${recipeIngredient.unitPrefix.toLowerCase()}</td>
+                <td>${ingredientName}</td>
+            </tr>
+            `;
+        }
+    }
+    xhr.open("post", url + "addrecipeingredient", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(recipeIngredientJson);
 }
 
 function isEmptyOrSpaces(str) {
