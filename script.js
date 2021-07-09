@@ -195,7 +195,7 @@ function getRecipeDetail() {
                         <div class="col-sm-2"></div>
                         <div class="col-sm-4 recipe__ingredients">
                             <ul>
-                                <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unitPrefix} ${ingredient.name}</li>
+                                <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unit} ${ingredient.name}</li>
                             </ul>
                         </div>
                     </div>
