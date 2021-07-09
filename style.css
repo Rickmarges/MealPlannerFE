@@ -92,6 +92,25 @@ li.ingredient-name {
 }
 
 #recipe-result img {
-    max-width: 400px;
+    max-width: 350px;
     max-height: 200px;
+}
+
+.input-ingredient {
+    text-transform: capitalize;
+    width: 350px;
+    height: 35px;
+}
+
+.input-amount {
+    width: 50px;
+    height: 35px;
+}
+
+.input-unit {
+    height: 35px;
+}
+
+.ingredient-label {
+    text-transform: capitalize;
 }

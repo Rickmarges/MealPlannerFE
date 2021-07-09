@@ -1,5 +1,5 @@
 // The url to the backend application
-const url = "https://mealplanner2.azurewebsites.net/"
+const url = "http://localhost:8082/"
 
 // Add an eventlistener to the name input field, to search on enter press
 const nameInput = document.getElementById('search-recipe-by-name');
@@ -51,6 +51,7 @@ function getAllRecipes() {
     xhr.open("get", url + "allrecipes", true);
     xhr.send();
 }
+
 
 function findRecipesByName(recipeName = "") {
     console.log(recipeName);
@@ -206,6 +207,61 @@ function getRecipeDetail() {
     xhr.send();
 }
 
+function getRecipeDetailForEdit() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+    console.log(recipeIdParam);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(this.responseText);
+            var recipe = JSON.parse(this.responseText);
+            document.getElementById("recipe-title-top").innerHTML = recipe.name;
+            document.getElementById("recipe-detail").innerHTML += `
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-6">
+                        <h2 class="page-title">${recipe.name}</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+                    <div class="col-sm-7">
+                        
+                        <div class="row">
+                            <div class="col-sm-8 recipe__description">
+                                ${recipe.description}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <br>
+                            <div class="col-sm-8 recipe__servings">
+                                Number of servings: ${recipe.servings}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        
+                <div class="row">
+                    <br>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-10">Add Ingredients</div>
+                    <br>
+                    <br>
+                </div>
+            `;
+        }
+    }
+    xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
+    xhr.send();
+}
+
 function addRecipe() {
     var recipe = {};
     recipe.name = document.getElementById('recipe-name-input').value;
@@ -219,54 +275,52 @@ function addRecipe() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var newRecipe = JSON.parse(this.responseText);
-            console.log(this.responseText);
-            addIngredients(newRecipe);
+            console.log("hello");
+            window.location.href = "./editrecipe.html?id=" + newRecipe.id;
+            getRecipeDetailForEdit(newRecipe);
         }
     }
     xhr.open("post", url + "addrecipe", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(recipejson);
+
 }
 
-function addIngredients(newRecipe) {
-    document.getElementById('new-recipe').innerHTML = `
-        <br>
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-6">
-                <h2 class="page-title">${newRecipe.name}</h2>
-            </div>
-        </div>
+function getAllIngredients(newRecipe) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+    console.log(recipeIdParam);
+    // window.location.href = "./editrecipe.html?id=" + newRecipe.id;
+    var xhr = new XMLHttpRequest();
+    console.log("in add ingredient")
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var ingredients = JSON.parse(this.responseText);
+            document.getElementById("ingredientList").innerHTML = `
+                <option value="ADD NEW INGREDIENT TO DATABASE"></option>
+            `;
+            ingredients.forEach(ingredient => {
+                document.getElementById("ingredientList").innerHTML += `
+                    <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
+                `;
+            })
+        }
+    }
+    xhr.open("get", url + "allingredients", true);
+    xhr.send();
+}
 
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-2"><img src="${newRecipe.picture}" class="recipe-picture"></div>
-            <div class="col-sm-8">
-                
-                <div class="row">
-                    <div class="col-sm-8 recipe__description">
-                        ${newRecipe.description}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <br>
-                    <div class="col-sm-8 recipe__servings">
-                        Number of servings: ${newRecipe.servings}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        
-        <div class="row">
-            <br>
-            <div class="col-sm-2"></div>
-            <div class="col-sm-10">Ingredients</div>
-            <br>
-            <br>
-        </div>
-    `;
+function addIngredients() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+    recipeIngredient = {}
+    recipeIngredient.amount = document.getElementById("ingredient-amount").value;
+    recipeIngredient.unit_prefix = document.getElementById('ingredient-unit').value;
+    recipeIngredient.recipe_id = recipeIdParam;
+    ingredient = document.getElementById("ingredientList-input").value;
+    ingredientId = ingredient.split(".")[0]
+    recipeIngredient.ingredient_id = ingredientId;
+    console.log(recipeIngredient);
 }
 
 function isEmptyOrSpaces(str) {
