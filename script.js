@@ -266,6 +266,9 @@ function addRecipe() {
     recipe.name = document.getElementById('recipe-name-input').value;
     recipe.servings = document.getElementById('servings-input').value;
     recipe.description = document.getElementById('recipe-description-input').value;
+    recipe.breakfast = document.getElementById('recipe-mealtype-input-breakfast').checked;
+    recipe.lunch = document.getElementById('recipe-mealtype-input-lunch').checked;
+    recipe.dinner = document.getElementById('recipe-mealtype-input-dinner').checked;
     recipe.picture = document.getElementById('recipe-picture-url-input').value;
     recipe.recipeIngredients = [];
 
@@ -274,6 +277,7 @@ function addRecipe() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var newRecipe = JSON.parse(this.responseText);
+            console.log(this.responseText);
             window.location.href = "./editrecipe.html?id=" + newRecipe.id;
             getRecipeDetailForEdit(newRecipe);
         }
@@ -329,8 +333,7 @@ function addIngredients() {
     const recipeIdParam = urlParams.get("id");
     recipeIngredient = {}
     recipeIngredient.amount = parseInt(document.getElementById("ingredient-amount").value);
-    unitPrefix = document.getElementById("ingredient-unit").value;
-    recipeIngredient.unitPrefix = unitPrefix.toUpperCase();
+    recipeIngredient.unit = document.getElementById("ingredient-unit").value;
     recipeIngredient.recipe = {};
     recipeIngredient.recipe.id = parseInt(recipeIdParam);
     ingredient = document.getElementById("ingredientList-input").value;
@@ -349,7 +352,7 @@ function addIngredients() {
             document.getElementById("added-ingredients").innerHTML += `
             <tr>
                 <td>${recipeIngredient.amount}</td>
-                <td>${recipeIngredient.unitPrefix.toLowerCase()}</td>
+                <td>${recipeIngredient.unit.toLowerCase()}</td>
                 <td>${ingredientName}</td>
             </tr>
             `;
