@@ -182,23 +182,24 @@ function getRecipeDetail() {
                     <div class="col-sm-10">Ingredients</div>
                     <br>
                     <br>
-                </div>
+                    </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-3 recipe__ingredients" id="ingredient-items"></div>
+                    <div class="col-sm-3 recipe_instructions" id="recipe-instructions">${recipe.instructions}</div>
+                    </div>
+
             `;
             var recipeIngredients = recipe.recipeIngredients;
             recipeIngredients.forEach(recipeIngredient => {
                 var ingredient = recipeIngredient.ingredient;
                 console.log(ingredient.name)
                 //document.getElementById("ingredients")
-                document.getElementById("ingredients-list").innerHTML +=
+                document.getElementById("ingredient-items").innerHTML +=
                     `
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-4 recipe__ingredients">
                             <ul>
                                 <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unitPrefix} ${ingredient.name}</li>
                             </ul>
-                        </div>
-                    </div>
                 `;
             })
         }
@@ -246,7 +247,10 @@ function getRecipeDetailForEdit() {
 
                     </div>
                 </div>
-        
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3 recipe_instructions" id="recipe-instructions">${recipe.instructions}</div>
+            </div>
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
@@ -254,6 +258,7 @@ function getRecipeDetailForEdit() {
                     <br>
                     <br>
                 </div>
+                
             `;
         }
     }
@@ -266,6 +271,7 @@ function addRecipe() {
     recipe.name = document.getElementById('recipe-name-input').value;
     recipe.servings = document.getElementById('servings-input').value;
     recipe.description = document.getElementById('recipe-description-input').value;
+    recipe.instructions = document.getElementById('recipe-instructions-input').value;
     recipe.breakfast = document.getElementById('recipe-mealtype-input-breakfast').checked;
     recipe.lunch = document.getElementById('recipe-mealtype-input-lunch').checked;
     recipe.dinner = document.getElementById('recipe-mealtype-input-dinner').checked;
