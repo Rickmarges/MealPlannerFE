@@ -44,6 +44,7 @@
             <h2 class="page-title">Add new recipe</h2>
         </div>
     </div>
+
     <div id="new-recipe">
         <div class="row">
             <div class="col-sm-2"></div>
@@ -51,7 +52,7 @@
                 <label class="new-recipe-label" for="recipe-name-input">Recipe Name</label>
             </div>
             <div class="col-sm-3">
-                <input id="recipe-name-input" class="input-recipe">
+                <input id="recipe-name-input" class="input-recipe" required>
             </div>
         </div>
 
@@ -61,7 +62,7 @@
                 <label class="new-recipe-label" for="servings-input"># Servings</label>
             </div>
             <div class="col-sm-3">
-                <input type="number" list="servings" id="servings-input" class="input-recipe">
+                <input type="number" list="servings" id="servings-input" class="input-recipe" required>
                 <datalist id="servings" class="input-recipe" name="servings">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -100,10 +101,20 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
-                <label class="new-recipe-label" for="recipe-instructions-input">Recipe Instructions</label>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="new-recipe-label" for="recipe-instructions-input">Recipe Instructions</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="addition"> Separate individual steps with "#"
+                        <p>
+                    </div>
+                </div>
             </div>
             <div class="col-sm-3">
-                <textarea id="recipe-instructions-input" class="input-recipe"></textarea><br>
+                <textarea id="recipe-instructions-input" class="input-recipe" required></textarea><br>
             </div>
         </div>
 
@@ -111,24 +122,12 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
-                <label class="new-recipe-label" for="recipe-picture-input">Picture url</label>
+                <label class="new-recipe-label" for="recipe-picture-url-input">Picture url</label>
             </div>
             <div class="col-sm-3">
-                <input id="recipe-picture-url-input" class="input-recipe"></input><br>
+                <input id="recipe-picture-url-input" class="input-recipe" required></input><br>
             </div>
         </div>
-        <!--
-        <div class="row">
-
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="recipe-instructions-input">Recipe Instructions</label>
-            </div>
-            <div class="col-sm-3">
-                <textarea id="recipe-instructions-input" class="input_recipe"></textarea>
-            </div>
-        </div>
-         -->
 
         <div class="row">
             <div class="col-sm-2"></div>
@@ -142,64 +141,6 @@
             </div>
         </div>
 
-        <!--
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <h5 class="new-recipe-label nutrition">Nutrition Values per Serving</h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="net-carbs">Net Carbs</label>
-            </div>
-            <div class="col-sm-3">
-                <input id="net-carbs" name="nutrition-values-per-serving" type="number" class="input_recipe">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="carbs">Carbs</label>
-            </div>
-            <div class="col-sm-3">
-                <input id="carbs" name="nutrition-values-per-serving" type="number" class="input_recipe">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="fats">Fats</label>
-            </div>
-            <div class="col-sm-3">
-                <input id="fats" name="nutrition-values-per-serving" type="number" class="input_recipe">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="protein">Protein</label>
-            </div>
-            <div class="col-sm-3">
-                <input id="protein" name="nutrition-values-per-serving" type="number" class="input_recipe">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-3">
-                <label class="new-recipe-label" for="calories">Calories</label>
-            </div>
-            <div class="col-sm-3">
-                <input id="calories" name="nutrition-values-per-serving" type="number" class="input_recipe">
-            </div>
-        </div> -->
-
         <br>
         <div class="row">
             <div class="col-sm-2"></div>
@@ -209,7 +150,6 @@
         </div>
 
     </div>
-    <div id="new-ingredient"></div>
     <script src="./script.js"></script>
 
 </body>

@@ -114,3 +114,7 @@ li.ingredient-name {
 .ingredient-label {
     text-transform: capitalize;
 }
+
+.addition {
+    padding-left: 15px;
+}
