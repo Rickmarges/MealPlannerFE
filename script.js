@@ -93,7 +93,7 @@ function findRecipesByName(recipeName = "") {
     }
 }
 
-function findRecipesByIngredient() {
+function findRecipesByIngredient(ingredientName = "") {
     var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
     console.log(ingredientName);
     if (isEmptyOrSpaces(ingredientName)) {
@@ -134,6 +134,45 @@ function findRecipesByIngredient() {
         xhr.send();
     }
 }
+
+function findRecipesByMealType() {
+    var mealtype = document.getElementById("search-recipe-by-mealtype").value;
+    console.log(mealtype);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(this.responseText);
+            var recipes = JSON.parse(this.responseText);
+            document.getElementById("recipe-result").innerHTML = "";
+            recipes.forEach(recipe => {
+                document.getElementById("recipe-result").innerHTML += `<br>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
+                            
+                            <div class="col-sm-8">
+                                
+                                <div class="row">
+                                    <div class="col-sm-8 recipe__name">
+                                        <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+                                    </div>                            
+                                 </div>
+                        
+                                <div class="row">
+                                     <div class="col-sm-8 recipe__description">
+                                        ${recipe.description}
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                    `;
+            })
+        }
+    }
+    xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);
+    xhr.send();
+}
+
 
 function getRecipeDetail() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -179,15 +218,20 @@ function getRecipeDetail() {
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-10">Ingredients</div>
+                    <div class="col-sm-3" id="ingredient-title">Ingredients</div>
+                    <div class="col-sm-5" id="instruction-title">Instructions</div>
                     <br>
                     <br>
                     </div>
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-3 recipe__ingredients" id="ingredient-items"></div>
-                    <div class="col-sm-3 recipe_instructions" id="recipe-instructions">${recipe.instructions}</div>
+                    <div class="col-sm-5 recipe_instructions" id="recipe-instructions">
+                        <div class="row">
+                            <ol id="instruction-steps"></ol>
+                        </div>
                     </div>
+                </div>
 
             `;
             var recipeIngredients = recipe.recipeIngredients;
@@ -200,6 +244,21 @@ function getRecipeDetail() {
                             <ul>
                                 <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unit} ${ingredient.name}</li>
                             </ul>
+                `;
+            })
+            var instructions = recipe.instructions.split("#");
+
+            if (instructions[0] == "") {
+                instructions.shift();
+            }
+            console.log(instructions);
+            document.getElementById("instruction-steps").innerHTML += ""
+            instructions.forEach(instruction => {
+                console.log(instruction);
+                document.getElementById("instruction-steps").innerHTML += `
+                    
+                            <li class="instruction-step-item">${instruction}</li>
+
                 `;
             })
         }
@@ -233,33 +292,54 @@ function getRecipeDetailForEdit() {
                     <div class="col-sm-7">
                         
                         <div class="row">
-                            <div class="col-sm-8 recipe__description">
+                            <div class="col-sm-9 recipe__description">
                                 ${recipe.description}
                             </div>
                         </div>
 
                         <div class="row">
                             <br>
-                            <div class="col-sm-8 recipe__servings">
+                            <div class="col-sm-9 recipe__servings">
                                 Number of servings: ${recipe.servings}
                             </div>
                         </div>
 
                     </div>
                 </div>
-            <div class="row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-3 recipe_instructions" id="recipe-instructions">${recipe.instructions}</div>
-            </div>
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-10">Add Ingredients</div>
+                    <div class="col-sm-3">Add Ingredients</div>
+                    <div class="col-sm-5">Instructions</div>
                     <br>
                     <br>
                 </div>
                 
             `;
+            document.getElementById("instructions").innerHTML = `
+            <div class="row">
+                    <div class="col-sm-12 recipe_instructions" id="recipe-instructions">
+                        <div class="row">
+                            <ol id="instruction-steps"></ol>
+                        </div>
+                    </div>
+                </div>
+            `;
+            var instructions = recipe.instructions.split("#");
+
+            if (instructions[0] == "") {
+                instructions.shift();
+            }
+            console.log(instructions);
+            document.getElementById("instruction-steps").innerHTML += ""
+            instructions.forEach(instruction => {
+                console.log(instruction);
+                document.getElementById("instruction-steps").innerHTML += `
+                    
+                            <li class="instruction-step-item">${instruction}</li>
+
+                `;
+            })
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
