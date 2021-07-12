@@ -136,6 +136,7 @@ function getRecipeDetail() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
+            console.log(recipe);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
@@ -242,9 +243,7 @@ function getRecipeDetailForEdit() {
             document.getElementById("instruction-steps").innerHTML += ""
             instructions.forEach(instruction => {
                 document.getElementById("instruction-steps").innerHTML += `
-                    
-                            <li class="instruction-step-item">${instruction}</li>
-
+                    <li class="instruction-step-item">${instruction}</li>
                 `;
             })
         }
@@ -284,7 +283,32 @@ function addRecipe() {
 async function getAllIngredients() {
     const response = await fetch(url + "allingredients");
     const ingredients = await response.json();
-    document.getElementById("table-add-ingredients").innerHTML = ``
+    document.getElementById("table-add-ingredients").innerHTML = `
+        <tr>
+        <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
+            <td><select class="input-unit" id="ingredient-unit">
+                    <option value="gr">gr</option>
+                    <option value="ml">ml</option>
+                    <option value="tbsp">tbsp</option>
+                    <option value="tsp">tsp</option>
+                    <option value="cup">cup</option>
+                </select></td>
+            <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+                <datalist id='ingredientList'></datalist>
+                <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
+            </td>
+        <tr>
+        `
+    const ingredientListEl = document.getElementById('ingredientList');
+
+    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
+    ingredients.forEach(ingredient => {
+        optionsString += `
+            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
+        `;
+    })
+
+    ingredientListEl.innerHTML = optionsString;
 
 }
 
@@ -321,8 +345,8 @@ function addIngredientToDB() {
     xhr.send(ingredientJSON);
 }
 
-
-function getAllIngredients(newRecipe) {
+/*
+function getAllIngredients1(newRecipe) {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
     console.log(recipeIdParam);
@@ -363,6 +387,7 @@ function getAllIngredients(newRecipe) {
         }
     }
 }
+*/
 
 function addIngredients() {
     const urlParams = new URLSearchParams(window.location.search);
