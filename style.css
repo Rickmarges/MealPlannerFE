@@ -92,8 +92,9 @@ li.ingredient-name {
 }
 
 #recipe-result img {
-    max-width: 350px;
-    max-height: 200px;
+    width: 350px;
+    height: 200px;
+    object-fit: cover;
 }
 
 #recipe-detail img {
@@ -136,4 +137,34 @@ select.search-input {
 
 #menu {
     margin-top: 25px;
+}
+
+.pages {
+    display: flex;
+    gap: 8px;
+    width: max-content;
+    margin: 20px auto;
+}
+
+.page {
+    display: block;
+    max-height: 75vh;
+    overflow: auto;
+}
+
+.recipe {
+    display: flex;
+    gap: 36px;
+    margin-bottom: 36px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 36px auto;
+}
+
+.recipe__content {
+    margin-top: -10px;
+}
+
+.recipe__title {
+    margin-top: 0;
 }
