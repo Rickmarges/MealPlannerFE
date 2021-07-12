@@ -58,12 +58,15 @@
                 <input id="ingredient-name-input" class="input-recipe" required>
             </div>
         </div>
-        <!--private int calories;
-        private double carbs;
-        private double netCarbs;
-        private double fats;
-        private double protein;
-        private double density;-->
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-3">
+                <label class="new-recipe-label" for="ingredient-calories-input">Calories</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="ingredient-calories-input" class="input-recipe" required>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
@@ -116,7 +119,7 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-3">
-                <button class="btn btn-info search" onclick="addRecipe()">Save ingredient</button>
+                <button class="btn btn-info search" onclick="addIngredientToDB()">Save ingredient</button>
             </div>
         </div>
 
