@@ -280,10 +280,60 @@ function addRecipe() {
 
 }
 
+
 async function getAllIngredients() {
     const response = await fetch(url + "allingredients");
     const ingredients = await response.json();
-    document.getElementById("table-add-ingredients").innerHTML = `
+    document.getElementById("table-add-ingredients").innerHTML = ``
+
+}
+
+function addIngredientToDB() {
+    var ingredient = {};
+    ingredient.id = 10;
+    ingredient.name = document.getElementById('ingredient-name-input').value;
+    ingredient.calories = document.getElementById('ingredient-calories-input').value;
+    ingredient.carbs = document.getElementById('ingredient-carbs-input').value;
+    ingredient.netcarbs = document.getElementById('ingredient-netcarbs-input').value;
+    ingredient.fats = document.getElementById('ingredient-fats-input').value;
+    ingredient.protein = document.getElementById('ingredient-protein-input').value;
+    ingredient.density = document.getElementById('ingredient-density-input').value;
+
+    var ingredientJSON = JSON.stringify(ingredient);
+    console.log(ingredientJSON);
+
+    //todo
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            /* document.getElementById("added-ingredients").innerHTML += `
+            <tr>
+                <td>${recipeIngredient.amount}</td>
+                <td>${recipeIngredient.unit.toLowerCase()}</td>
+                <td>${ingredientName}</td>
+            </tr>
+            `;-->*/
+            location.reload();
+        }
+    }
+    xhr.open("post", url + "addingredienttodb", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(ingredientJSON);
+}
+
+
+function getAllIngredients(newRecipe) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+    console.log(recipeIdParam);
+    // window.location.href = "./editrecipe.html?id=" + newRecipe.id;
+    var xhr = new XMLHttpRequest();
+    console.log("in get ingredient")
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var ingredients = JSON.parse(this.responseText);
+            document.getElementById("table-add-ingredients").innerHTML = `
+
             <tr>
             <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
                 <td><select class="input-unit" id="ingredient-unit">
@@ -300,16 +350,18 @@ async function getAllIngredients() {
             <tr>
             `
 
-    const ingredientListEl = document.getElementById('ingredientList');
+            const ingredientListEl = document.getElementById('ingredientList');
 
-    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
-    ingredients.forEach(ingredient => {
-        optionsString += `
+            let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
+            ingredients.forEach(ingredient => {
+                optionsString += `
             <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
         `;
-    })
+            })
 
-    ingredientListEl.innerHTML = optionsString;
+            ingredientListEl.innerHTML = optionsString;
+        }
+    }
 }
 
 function addIngredients() {
@@ -320,6 +372,7 @@ function addIngredients() {
     recipeIngredient.unit = document.getElementById("ingredient-unit").value;
     recipeIngredient.recipe = {};
     recipeIngredient.recipe.id = parseInt(recipeIdParam);
+
     ingredient = document.getElementById("ingredientList-input").value;
     ingredientId = ingredient.split(".")[0];
     ingredientName = ingredient.split(". ")[1];
@@ -343,6 +396,8 @@ function addIngredients() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(recipeIngredientJson);
 }
+
+
 
 function isEmptyOrSpaces(str) {
     return str === null || str.match(/^ *$/) !== null;
