@@ -5,6 +5,13 @@ const url = "http://localhost:8082/"
 const nameInput = document.getElementById('search-recipe-by-name');
 if (nameInput != null) {
     nameInput.addEventListener("keyup", function (event) {
+        findRecipesByName(event.target.value);
+    });
+}
+
+const nameInputButton = document.getElementById("search-recipe-by-name-btn");
+if (nameInputButton && nameInput) {
+    nameInputButton.addEventListener('click', (ev) => {
         findRecipesByName(nameInput.value);
     });
 }
@@ -17,35 +24,52 @@ if (ingredientInput != null) {
     });
 }
 
+const recipeTemplate = (recipe) => `
+    <div class="recipe">
+        <div><img src="${recipe.picture}"></div>
+        <div class="recipe__content">
+            <h4 class="recipe__title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+            <p class="recipe__description">
+                ${recipe.description}
+            </p>
+        </div>
+    </div>
+`;
+
+const recipeDetailTemplate = (recipe) => `
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+        <div class="col-sm-7">
+            
+            <div class="row">
+                <div class="col-sm-8 recipe__description">
+                    ${recipe.description}
+                </div>
+            </div>
+
+            <div class="row">
+                <br>
+                <div class="col-sm-8 recipe__servings">
+                    Number of servings: ${recipe.servings}
+                </div>
+            </div>
+
+        </div>
+    </div>
+`;
+
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            console.log(this.responseText);
             var recipes = JSON.parse(this.responseText);
-            document.getElementById("recipe-result").innerHTML = "";
-            recipes.forEach(recipe => {
-                document.getElementById("recipe-result").innerHTML += `
-                <br>
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-7">
-                        <div class="row">
-                            <div class="col-sm-8 recipe__name">
-                                <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                            </div>                            
-                        </div>
+            const recipeResultEl = document.getElementById("recipe-result");
 
-                        <div class="row">
-                            <div class="col-sm-8 recipe__description">
-                                ${recipe.description}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            })
+            const paginatedRecipeEl = document.createElement('paginated-recipes');
+            paginatedRecipeEl.size = 10;
+            paginatedRecipeEl.recipes = recipes;
+            recipeResultEl.appendChild(paginatedRecipeEl);
         }
     }
     xhr.open("get", url + "allrecipes", true);
@@ -54,39 +78,20 @@ function getAllRecipes() {
 
 
 function findRecipesByName(recipeName = "") {
-    console.log(recipeName);
     if (isEmptyOrSpaces(recipeName)) {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                console.log(this.responseText);
                 var recipes = JSON.parse(this.responseText);
-                document.getElementById("recipe-result").innerHTML = "";
-                recipes.forEach(recipe => {
-                    document.getElementById("recipe-result").innerHTML += `
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
-                        <div class="col-sm-7">
-                            <div class="row">
-                                <div class="col-sm-8 recipe__name">
-                                    <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                                </div>                            
-                            </div>
+                const recipeResultEl = document.getElementById("recipe-result");
 
-                            <div class="row">
-                                <div class="col-sm-8 recipe__description">
-                                    ${recipe.description}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                })
-            };
+                const paginatedRecipeEl = document.createElement('paginated-recipes');
+                paginatedRecipeEl.size = 10;
+                paginatedRecipeEl.recipes = recipes;
+                recipeResultEl.appendChild(paginatedRecipeEl);
+            }
         }
         xhr.open("get", url + "findrecipesbyname/" + recipeName, true);
         xhr.send();
@@ -95,39 +100,19 @@ function findRecipesByName(recipeName = "") {
 
 function findRecipesByIngredient(ingredientName = "") {
     var ingredientName = document.getElementById("search-recipe-by-ingredient").value;
-    console.log(ingredientName);
     if (isEmptyOrSpaces(ingredientName)) {
         getAllRecipes();
     } else {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                console.log(this.responseText);
                 var recipes = JSON.parse(this.responseText);
-                document.getElementById("recipe-result").innerHTML = "";
-                recipes.forEach(recipe => {
-                    document.getElementById("recipe-result").innerHTML += `<br>
-                        <div class="row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                            
-                            <div class="col-sm-8">
-                                
-                                <div class="row">
-                                    <div class="col-sm-8 recipe__name">
-                                        <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                                    </div>                            
-                                 </div>
-                        
-                                <div class="row">
-                                     <div class="col-sm-8 recipe__description">
-                                        ${recipe.description}
-                                    </div>
-                                </div>
-                             </div>
-                        </div>
-                    `;
-                })
+                const recipeResultEl = document.getElementById("recipe-result");
+
+                const paginatedRecipeEl = document.createElement('paginated-recipes');
+                paginatedRecipeEl.size = 10;
+                paginatedRecipeEl.recipes = recipes;
+                recipeResultEl.appendChild(paginatedRecipeEl);
             }
         }
         xhr.open("get", url + "findrecipesbyingredient/" + ingredientName, true);
@@ -137,36 +122,16 @@ function findRecipesByIngredient(ingredientName = "") {
 
 function findRecipesByMealType() {
     var mealtype = document.getElementById("search-recipe-by-mealtype").value;
-    console.log(mealtype);
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            console.log(this.responseText);
             var recipes = JSON.parse(this.responseText);
-            document.getElementById("recipe-result").innerHTML = "";
-            recipes.forEach(recipe => {
-                document.getElementById("recipe-result").innerHTML += `<br>
-                        <div class="row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-2"><img src="${recipe.picture}" class="recipe-picture"></div>
-                            
-                            <div class="col-sm-8">
-                                
-                                <div class="row">
-                                    <div class="col-sm-8 recipe__name">
-                                        <h4 class="recipe-title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-                                    </div>                            
-                                 </div>
-                        
-                                <div class="row">
-                                     <div class="col-sm-8 recipe__description">
-                                        ${recipe.description}
-                                    </div>
-                                </div>
-                             </div>
-                        </div>
-                    `;
-            })
+            const recipeResultEl = document.getElementById("recipe-result");
+
+            const paginatedRecipeEl = document.createElement('paginated-recipes');
+            paginatedRecipeEl.size = 10;
+            paginatedRecipeEl.recipes = recipes;
+            recipeResultEl.appendChild(paginatedRecipeEl);
         }
     }
     xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);
@@ -177,12 +142,10 @@ function findRecipesByMealType() {
 function getRecipeDetail() {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
-    console.log(recipeIdParam);
 
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            console.log(this.responseText);
             var recipe = JSON.parse(this.responseText);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
@@ -194,26 +157,7 @@ function getRecipeDetail() {
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-7">
-                        
-                        <div class="row">
-                            <div class="col-sm-8 recipe__description">
-                                ${recipe.description}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <br>
-                            <div class="col-sm-8 recipe__servings">
-                                Number of servings: ${recipe.servings}
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                ${recipeDetailTemplate(recipe)}
         
                 <div class="row">
                     <br>
@@ -237,8 +181,6 @@ function getRecipeDetail() {
             var recipeIngredients = recipe.recipeIngredients;
             recipeIngredients.forEach(recipeIngredient => {
                 var ingredient = recipeIngredient.ingredient;
-                console.log(ingredient.name)
-                //document.getElementById("ingredients")
                 document.getElementById("ingredient-items").innerHTML +=
                     `
                             <ul>
@@ -251,10 +193,8 @@ function getRecipeDetail() {
             if (instructions[0] == "") {
                 instructions.shift();
             }
-            console.log(instructions);
             document.getElementById("instruction-steps").innerHTML += ""
             instructions.forEach(instruction => {
-                console.log(instruction);
                 document.getElementById("instruction-steps").innerHTML += `
                     
                             <li class="instruction-step-item">${instruction}</li>
@@ -274,7 +214,6 @@ function getRecipeDetailForEdit() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            console.log(this.responseText);
             var recipe = JSON.parse(this.responseText);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
@@ -286,26 +225,7 @@ function getRecipeDetailForEdit() {
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
-                    <div class="col-sm-7">
-                        
-                        <div class="row">
-                            <div class="col-sm-9 recipe__description">
-                                ${recipe.description}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <br>
-                            <div class="col-sm-9 recipe__servings">
-                                Number of servings: ${recipe.servings}
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                ${recipeDetailTemplate(recipe)}
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
@@ -330,10 +250,8 @@ function getRecipeDetailForEdit() {
             if (instructions[0] == "") {
                 instructions.shift();
             }
-            console.log(instructions);
             document.getElementById("instruction-steps").innerHTML += ""
             instructions.forEach(instruction => {
-                console.log(instruction);
                 document.getElementById("instruction-steps").innerHTML += `
                     
                             <li class="instruction-step-item">${instruction}</li>
@@ -363,7 +281,6 @@ function addRecipe() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var newRecipe = JSON.parse(this.responseText);
-            console.log(this.responseText);
             window.location.href = "./editrecipe.html?id=" + newRecipe.id;
             getRecipeDetailForEdit(newRecipe);
         }
@@ -374,19 +291,12 @@ function addRecipe() {
 
 }
 
-function getAllIngredients(newRecipe) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const recipeIdParam = urlParams.get("id");
-    console.log(recipeIdParam);
-    // window.location.href = "./editrecipe.html?id=" + newRecipe.id;
-    var xhr = new XMLHttpRequest();
-    console.log("in get ingredient")
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            var ingredients = JSON.parse(this.responseText);
-            document.getElementById("table-add-ingredients").innerHTML = `
+async function getAllIngredients() {
+    const response = await fetch(url + "allingredients");
+    const ingredients = await response.json();
+    document.getElementById("table-add-ingredients").innerHTML = `
             <tr>
-            <td><input class="input-amount" id="ingredient-amount" type="number"></td>
+            <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
                 <td><select class="input-unit" id="ingredient-unit">
                         <option value="gr">gr</option>
                         <option value="ml">ml</option>
@@ -400,18 +310,17 @@ function getAllIngredients(newRecipe) {
                 </td>
             <tr>
             `
-            document.getElementById("ingredientList").innerHTML = `
-                <option value="ADD NEW INGREDIENT TO DATABASE"></option>
-            `;
-            ingredients.forEach(ingredient => {
-                document.getElementById("ingredientList").innerHTML += `
-                    <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
-                `;
-            })
-        }
-    }
-    xhr.open("get", url + "allingredients", true);
-    xhr.send();
+
+    const ingredientListEl = document.getElementById('ingredientList');
+
+    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
+    ingredients.forEach(ingredient => {
+        optionsString += `
+            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
+        `;
+    })
+
+    ingredientListEl.innerHTML = optionsString;
 }
 
 function addIngredients() {
@@ -427,12 +336,9 @@ function addIngredients() {
     ingredientName = ingredient.split(". ")[1];
     recipeIngredient.ingredient = {};
     recipeIngredient.ingredient.id = parseInt(ingredientId);
-    console.log(recipeIngredient);
 
     var recipeIngredientJson = JSON.stringify(recipeIngredient);
-    console.log(recipeIngredientJson);
     var xhr = new XMLHttpRequest();
-    console.log("in add ingredient");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             document.getElementById("added-ingredients").innerHTML += `
