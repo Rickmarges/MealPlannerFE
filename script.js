@@ -1,6 +1,12 @@
 // The url to the backend application
 const url = "http://localhost:8082/"
 
+// insert custom elements paginated recipes
+const recipeResultEl = document.getElementById("recipe-result");
+const paginatedRecipeEl = document.createElement('paginated-recipes');
+paginatedRecipeEl.size = 10;
+recipeResultEl.appendChild(paginatedRecipeEl);
+
 // Add an eventlistener to the name input field, to search on enter press
 const nameInput = document.getElementById('search-recipe-by-name');
 if (nameInput != null) {
@@ -64,12 +70,7 @@ function getAllRecipes() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipes = JSON.parse(this.responseText);
-            const recipeResultEl = document.getElementById("recipe-result");
-
-            const paginatedRecipeEl = document.createElement('paginated-recipes');
-            paginatedRecipeEl.size = 10;
             paginatedRecipeEl.recipes = recipes;
-            recipeResultEl.appendChild(paginatedRecipeEl);
         }
     }
     xhr.open("get", url + "allrecipes", true);
@@ -85,12 +86,8 @@ function findRecipesByName(recipeName = "") {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 var recipes = JSON.parse(this.responseText);
-                const recipeResultEl = document.getElementById("recipe-result");
-
-                const paginatedRecipeEl = document.createElement('paginated-recipes');
-                paginatedRecipeEl.size = 10;
                 paginatedRecipeEl.recipes = recipes;
-                recipeResultEl.appendChild(paginatedRecipeEl);
+
             }
         }
         xhr.open("get", url + "findrecipesbyname/" + recipeName, true);
@@ -107,12 +104,8 @@ function findRecipesByIngredient(ingredientName = "") {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 var recipes = JSON.parse(this.responseText);
-                const recipeResultEl = document.getElementById("recipe-result");
-
-                const paginatedRecipeEl = document.createElement('paginated-recipes');
-                paginatedRecipeEl.size = 10;
                 paginatedRecipeEl.recipes = recipes;
-                recipeResultEl.appendChild(paginatedRecipeEl);
+
             }
         }
         xhr.open("get", url + "findrecipesbyingredient/" + ingredientName, true);
@@ -126,12 +119,8 @@ function findRecipesByMealType() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipes = JSON.parse(this.responseText);
-            const recipeResultEl = document.getElementById("recipe-result");
-
-            const paginatedRecipeEl = document.createElement('paginated-recipes');
-            paginatedRecipeEl.size = 10;
             paginatedRecipeEl.recipes = recipes;
-            recipeResultEl.appendChild(paginatedRecipeEl);
+
         }
     }
     xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);

@@ -25,6 +25,15 @@ class PaginatedRecipes extends HTMLElement {
         this.setAttribute('size', value);
     }
 
+    get recipes() {
+        return this._recipes;
+    }
+
+    set recipes(value) {
+        this._recipes = value;
+        this.render();
+    }
+
     connectedCallback() {
         this.render();
     }
@@ -44,12 +53,13 @@ class PaginatedRecipes extends HTMLElement {
     }
 
     render() {
-        const amountOfRecipes = this.recipes.length;
+        const recipes = this.recipes || [];
+        const amountOfRecipes = recipes.length;
         const pages = Math.ceil(amountOfRecipes / 10);
 
         const recipesByTen = [[]];
         let counter = 0;
-        this.recipes.forEach((item, index) => {
+        recipes.forEach((item, index) => {
             if (recipesByTen[counter].length === 10) {
                 counter++;
                 recipesByTen[counter] = [];
