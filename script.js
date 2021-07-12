@@ -374,6 +374,40 @@ function addRecipe() {
 
 }
 
+function addIngredientToDB() {
+    var ingredient = {};
+    ingredient.id = 10;
+    ingredient.name = document.getElementById('ingredient-name-input').value;
+    ingredient.calories = document.getElementById('ingredient-calories-input').value;
+    ingredient.carbs = document.getElementById('ingredient-carbs-input').value;
+    ingredient.netcarbs = document.getElementById('ingredient-netcarbs-input').value;
+    ingredient.fats = document.getElementById('ingredient-fats-input').value;
+    ingredient.protein = document.getElementById('ingredient-protein-input').value;
+    ingredient.density = document.getElementById('ingredient-density-input').value;
+
+    var ingredientJSON = JSON.stringify(ingredient);
+    console.log(ingredientJSON);
+
+    //todo
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            /* document.getElementById("added-ingredients").innerHTML += `
+            <tr>
+                <td>${recipeIngredient.amount}</td>
+                <td>${recipeIngredient.unit.toLowerCase()}</td>
+                <td>${ingredientName}</td>
+            </tr>
+            `;-->*/
+            location.reload();
+        }
+    }
+    xhr.open("post", url + "addingredienttodb", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(ingredientJSON);
+}
+
+
 function getAllIngredients(newRecipe) {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
@@ -422,6 +456,7 @@ function addIngredients() {
     recipeIngredient.unit = document.getElementById("ingredient-unit").value;
     recipeIngredient.recipe = {};
     recipeIngredient.recipe.id = parseInt(recipeIdParam);
+
     ingredient = document.getElementById("ingredientList-input").value;
     ingredientId = ingredient.split(".")[0];
     ingredientName = ingredient.split(". ")[1];
@@ -448,6 +483,8 @@ function addIngredients() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(recipeIngredientJson);
 }
+
+
 
 function isEmptyOrSpaces(str) {
     return str === null || str.match(/^ *$/) !== null;
