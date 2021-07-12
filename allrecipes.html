@@ -19,22 +19,26 @@
 </head>
 
 <body onload="getAllRecipes()">
-    <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-2">
-            <a href="./index.html" class="menu-item">Home</a>
-        </div>
-        <div class="col-sm-2">
-            <a href="./allrecipes.html" class="menu-item">Recipes</a>
-        </div>
-        <div class="col-sm-2">
-            <a href="./index.html" class="menu-item">Meal Planner</a>
-        </div>
-        <div class="col-sm-2">
-            <a href="./index.html" class="menu-item">My Plans</a>
-        </div>
-        <div class="col-sm-2">
-            <a href="./account.html" class="menu-item">Account</a>
+    <div class="row" id="menu">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="./index.html" class="menu-item">Home</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./allrecipes.html" class="menu-item">Recipes</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./index.html" class="menu-item">Meal Planner</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./index.html" class="menu-item">My Plans</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./account.html" class="menu-item">Account</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -42,6 +46,9 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-3">
             <h2 class="page-title">Recipes</h2>
+        </div>
+        <div class="col-sm-3">
+            <input class="btn btn-info search" type="submit" id="add-new-recipe" value="Add new recipe" onclick="window.location.href='./addnewrecipe.html';"></button>
         </div>
     </div>
     <div class="row">
@@ -59,11 +66,17 @@
             <button class="btn btn-info search" onclick="findRecipesByIngredient()">Search Recipes</button>
         </div>
         <div class="col-sm-3 search">
-            <h4 class="title">Add new recipe</h4>
+            <h4 class="title">Search recipes by meal type</h4>
 
-            <input class="btn btn-info search" type="submit" id="add-new-recipe" value="Add new recipe" onclick="window.location.href='./addnewrecipe.html';"></button>
+            <select id="search-recipe-by-mealtype" class="search-input" type>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+            </select>
+            <button class="btn btn-info search" onclick="findRecipesByMealType()">Search Recipes</button>
         </div>
     </div>
+
 
     <div id="recipe-result"></div>
     <script src=" ./script.js">
