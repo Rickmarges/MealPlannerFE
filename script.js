@@ -30,19 +30,8 @@ if (ingredientInput != null) {
     });
 }
 
-const recipeTemplate = (recipe) => `
-    <div class="recipe">
-        <div><img src="${recipe.picture}"></div>
-        <div class="recipe__content">
-            <h4 class="recipe__title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-            <p class="recipe__description">
-                ${recipe.description}
-            </p>
-        </div>
-    </div>
-`;
-
-const recipeDetailTemplate = (recipe) => `
+function recipeDetailTemplate(recipe) {
+    return `
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
@@ -63,7 +52,7 @@ const recipeDetailTemplate = (recipe) => `
 
         </div>
     </div>
-`;
+`}
 
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
@@ -115,16 +104,20 @@ function findRecipesByIngredient(ingredientName = "") {
 
 function findRecipesByMealType() {
     var mealtype = document.getElementById("search-recipe-by-mealtype").value;
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            var recipes = JSON.parse(this.responseText);
-            paginatedRecipeEl.recipes = recipes;
+    if (mealtype != "") {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                var recipes = JSON.parse(this.responseText);
+                paginatedRecipeEl.recipes = recipes;
 
+            }
         }
+        xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);
+        xhr.send();
+    } else {
+        getAllRecipes();
     }
-    xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);
-    xhr.send();
 }
 
 
@@ -136,7 +129,6 @@ function getRecipeDetail() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
-            console.log(recipe);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
