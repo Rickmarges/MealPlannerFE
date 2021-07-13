@@ -16,6 +16,8 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src=" ./paginated-recipes.js"></script>
 </head>
 
 <body onload="getAllRecipes()">
@@ -60,7 +62,7 @@
             <h4 class="title">Search recipes by name</h4>
 
             <input id="search-recipe-by-name" class="search-input">
-            <button class="btn btn-info search" onclick="findRecipesByName()">Search Recipes</button>
+            <button id="search-recipe-by-name-btn" class="btn btn-info search">Search Recipes</button>
         </div>
         <div class="col-sm-3 search">
             <h4 class="title">Search recipes by ingredient</h4>
@@ -79,11 +81,8 @@
             <button class="btn btn-info search" onclick="findRecipesByMealType()">Search Recipes</button>
         </div>
     </div>
-
-
     <div id="recipe-result"></div>
-    <script src=" ./script.js">
-    </script>
+    <script src=" ./script.js"></script>
 </body>
 
 </html>
