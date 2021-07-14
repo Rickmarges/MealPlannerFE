@@ -30,6 +30,29 @@ if (ingredientInput != null) {
     });
 }
 
+function getServingOptions(recipe) {
+    const optionlist20 = Array.from({ length: 20 }, (x, i) => i + 1);
+    var optionString = `
+            <select id="selected-number-of-servings" class="number-of-servings-dropdown">
+        `
+    optionlist20.forEach(number => {
+        if (recipe.servings == number) {
+            optionString += `
+            <option value="${number}" selected>${number}<option>
+            `;
+        } else {
+            optionString += `
+            <option value="${number}">${number}</option>
+            `
+        }
+    })
+
+    optionString += `
+        </select>
+    `
+    return optionString
+}
+
 function recipeDetailTemplate(recipe) {
     return `
     <div class="row">
@@ -46,7 +69,7 @@ function recipeDetailTemplate(recipe) {
             <div class="row">
                 <br>
                 <div class="col-sm-8 recipe__servings">
-                    Number of servings: ${recipe.servings}
+                    Number of servings: ${getServingOptions(recipe)}
                 </div>
             </div>
 
@@ -86,6 +109,40 @@ function recipeDetailTemplate(recipe) {
     </div>
 `}
 
+function ingredientAndInstructionsTemplate() {
+    return `
+    <div class="row">
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3" id="ingredient-title">Ingredients</div>
+        <div class="col-sm-5" id="instruction-title">Instructions</div>
+        <br>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3 recipe-ingredients" id="ingredient-items"><ul id="ingredient-list-items"></ul></div>
+        <div class="col-sm-5 recipe-instructions" id="recipe-instructions"></div>
+    </div>
+`}
+
+function updateIngredientsNumServings(recipe, selectedNumServings) {
+    // selectedNumServings = document.getElementById("selected-number-of-servings").value;
+    var recipeIngredients = recipe.recipeIngredients;
+    document.getElementById("ingredient-list-items").innerHTML = "";
+    recipeIngredients.forEach(recipeIngredient => {
+        var ingredient = recipeIngredient.ingredient;
+
+        var ingredientAmountPerServing = recipeIngredient.amount / recipe.servings;
+        var ingredientAmountPerSelectedServing = ingredientAmountPerServing * selectedNumServings;
+
+        document.getElementById("ingredient-list-items").innerHTML +=
+            `
+                <li class="ingredient-name">${ingredientAmountPerSelectedServing} ${recipeIngredient.unit} ${ingredient.name}</li>
+        `;
+    })
+}
+
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
@@ -97,7 +154,6 @@ function getAllRecipes() {
     xhr.open("get", url + "allrecipes", true);
     xhr.send();
 }
-
 
 function findRecipesByName(recipeName = "") {
     if (isEmptyOrSpaces(recipeName)) {
@@ -152,7 +208,6 @@ function findRecipesByMealType() {
     }
 }
 
-
 function getRecipeDetail() {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
@@ -172,48 +227,53 @@ function getRecipeDetail() {
                 </div>
 
                 ${recipeDetailTemplate(recipe)}
-        
-                <div class="row">
-                    <br>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3" id="ingredient-title">Ingredients</div>
-                    <div class="col-sm-5" id="instruction-title">Instructions</div>
-                    <br>
-                    <br>
-                    </div>
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3 recipe__ingredients" id="ingredient-items"></div>
-                    <div class="col-sm-5 recipe_instructions" id="recipe-instructions">
-                        <div class="row">
-                            <ol id="instruction-steps"></ol>
-                        </div>
-                    </div>
-                </div>
-
+                ${ingredientAndInstructionsTemplate()}
             `;
+
+            const selectedNumServings = document.getElementById("selected-number-of-servings");
+            selectedNumServings.addEventListener("change", (ev) => {
+                updateIngredientsNumServings(recipe, selectedNumServings.value);
+            })
+            console.log(selectedNumServings.value);
             var recipeIngredients = recipe.recipeIngredients;
             recipeIngredients.forEach(recipeIngredient => {
                 var ingredient = recipeIngredient.ingredient;
-                document.getElementById("ingredient-items").innerHTML +=
-                    `
-                            <ul>
-                                <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unit} ${ingredient.name}</li>
-                            </ul>
+                var ingredientAmountPerServing = recipeIngredient.amount / recipe.servings;
+                var ingredientAmountPerSelectedServing = ingredientAmountPerServing * selectedNumServings.value;
+                document.getElementById("ingredient-list-items").innerHTML += `
+                        <li class="ingredient-name">${ingredientAmountPerSelectedServing} ${recipeIngredient.unit} ${ingredient.name}</li>
                 `;
             })
-            var instructions = recipe.instructions.split("#");
-
-            if (instructions[0] == "") {
-                instructions.shift();
+            var instructionSections = recipe.instructions.split("$");
+            if (instructionSections[0] == "") {
+                instructionSections.shift();
             }
-            document.getElementById("instruction-steps").innerHTML += ""
-            instructions.forEach(instruction => {
-                document.getElementById("instruction-steps").innerHTML += `
-                    
-                            <li class="instruction-step-item">${instruction}</li>
 
-                `;
+            instructionSections.forEach(instructionSection => {
+                var sectionName = instructionSection.split("#")[0];
+
+                document.getElementById("recipe-instructions").innerHTML += `
+                    <div class="row">
+                        <div class="col-sm-5 instruction-section" id="instruction-section">${sectionName}</div>
+                    </div>
+                    <div class="row">
+                        <ol id="instruction-steps-${sectionName}"></ol>
+                    </div>
+                    `;
+
+                var instructionsSteps = instructionSection.split("#");
+
+                if (instructionsSteps[0] == "") {
+                    instructionsSteps.shift();
+                }
+                instructionsSteps.shift();
+
+                instructionsSteps.forEach(instruction => {
+                    document.getElementById("instruction-steps-" + sectionName).innerHTML += `
+                        <li class="instruction-step-item">${instruction}</li>
+
+                    `;
+                })
             })
 
             document.getElementById("save-recipe").innerHTML = `
@@ -238,6 +298,7 @@ function getRecipeDetailForEdit() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
+
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
@@ -332,7 +393,6 @@ function addRecipe() {
 
 }
 
-
 async function getAllIngredients() {
     const response = await fetch(url + "allingredients");
     const ingredients = await response.json();
@@ -417,6 +477,7 @@ function addIngredients() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+
             document.getElementById("added-ingredients").innerHTML += `
             <tr>
                 <td>${recipeIngredient.amount}</td>
