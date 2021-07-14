@@ -315,8 +315,8 @@ function getRecipeDetailForEdit() {
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-3">Add Ingredients</div>
-                    <div class="col-sm-5">Instructions</div>
+                    <div class="col-sm-3" id="ingredient-title">Add Ingredients</div>
+                    <div class="col-sm-5" id="instruction-title">Instructions</div>
                     <br>
                     <br>
                 </div>
