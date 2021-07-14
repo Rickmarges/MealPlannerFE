@@ -177,8 +177,32 @@ option:empty {
   display:none;
 }
 
-#ingredient-title, #instruction-title {
+#ingredient-title, #instruction-title, #nutrition-title{
     font-size: 15px;
     text-transform: uppercase;
     font-weight: 600;
 }
+
+#nutrition-title {
+    padding-bottom: 5px;
+}
+
+.nutrition-values-recipe {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.nutrition-values-recipe-first {
+    padding-right: 15px;
+}
+
+.edit-recipe-btn, .save-recipe-btn {
+    float: right;
+    width: 125px;
+}
+
+.instruction-step-item, .recipe-description {
+    text-align: justify;
+    padding-bottom: 15px;
+}
+
