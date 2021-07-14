@@ -16,7 +16,7 @@ app.use(express.static('Login'))
 
 // Set up a route for index.html.
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname + '/Login/account.html'));
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 // Start the server.
