@@ -168,3 +168,8 @@ select.search-input {
 .recipe__title {
     margin-top: 0;
 }
+
+.save-button-row {
+    margin-top: 50px;
+}
+
