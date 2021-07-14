@@ -173,3 +173,16 @@ select.search-input {
     margin-top: 50px;
 }
 
+option:empty {
+  display:none;
+}
+
+#ingredient-title, #instruction-title {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#instruction-section {
+    padding-bottom: 5px;
+}
