@@ -244,6 +244,8 @@ function getRecipeDetail() {
                         <li class="ingredient-name">${ingredientAmountPerSelectedServing} ${recipeIngredient.unit} ${ingredient.name}</li>
                 `;
             })
+
+
             var instructionSections = recipe.instructions.split("$");
             if (instructionSections[0] == "") {
                 instructionSections.shift();
@@ -331,25 +333,36 @@ function getRecipeDetailForEdit() {
                 `;
             });
 
-            document.getElementById("instructions").innerHTML = `
-            <div class="row">
-                    <div class="col-sm-12 recipe_instructions" id="recipe-instructions">
-                        <div class="row">
-                            <ol id="instruction-steps"></ol>
-                        </div>
-                    </div>
-                </div>
-            `;
-            var instructions = recipe.instructions.split("#");
-
-            if (instructions[0] == "") {
-                instructions.shift();
+            var instructionSections = recipe.instructions.split("$");
+            if (instructionSections[0] == "") {
+                instructionSections.shift();
             }
-            document.getElementById("instruction-steps").innerHTML += ""
-            instructions.forEach(instruction => {
-                document.getElementById("instruction-steps").innerHTML += `
-                    <li class="instruction-step-item">${instruction}</li>
-                `;
+
+            instructionSections.forEach(instructionSection => {
+                var sectionName = instructionSection.split("#")[0];
+
+                document.getElementById("instructions").innerHTML += `
+                    <div class="row">
+                        <div class="col-sm-5 instruction-section" id="instruction-section">${sectionName}</div>
+                    </div>
+                    <div class="row">
+                        <ol id="instruction-steps-${sectionName}"></ol>
+                    </div>
+                    `;
+
+                var instructionsSteps = instructionSection.split("#");
+
+                if (instructionsSteps[0] == "") {
+                    instructionsSteps.shift();
+                }
+                instructionsSteps.shift();
+
+                instructionsSteps.forEach(instruction => {
+                    document.getElementById("instruction-steps-" + sectionName).innerHTML += `
+                        <li class="instruction-step-item">${instruction}</li>
+
+                    `;
+                })
             })
 
             document.getElementById("save-recipe").innerHTML = `
