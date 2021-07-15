@@ -58,53 +58,42 @@ function recipeDetailTemplate(recipe) {
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
-        <div class="col-sm-7">
+        <div class="col-sm-5">
             
             <div class="row">
-                <div class="col-sm-8 recipe__description">
+                <div class="col-sm-12 recipe-description">
                     ${recipe.description}
                 </div>
             </div>
 
             <div class="row">
-                <br>
-                <div class="col-sm-8 recipe__servings">
-                    Number of servings: ${getServingOptions(recipe)}
+                <div class="col-sm-12 nutrition-values" id="nutrition-title">
+                    Nutrion values per serving
                 </div>
             </div>
 
             <div class="row">
-                <br>
-                <div class="col-sm-8 recipe__carbs">
-                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                <div class="col-sm-12 nutrition-values-per-serving">
+                    <text class="nutrition-values-recipe-first">Carbs: ${recipe.carbsPerServing.toFixed(2)}</text>
+                    |
+                    <text class="nutrition-values-recipe">Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}</text>
+                    |
+                    <text class="nutrition-values-recipe">Fats: ${recipe.fatsPerServing.toFixed(2)}</text>
+                    |
+                    <text class="nutrition-values-recipe">Protein: ${recipe.proteinPerServing.toFixed(2)}</text>
+                    |
+                    <text class="nutrition-values-recipe">Calories: ${recipe.caloriesPerServing.toFixed(2)}</text>
                     
+                    
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-sm-8 recipe__netcarbs">
-                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-8 recipe__fats">
-                    Fats: ${recipe.fatsPerServing.toFixed(2)}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-8 recipe__protein">
-                    Protein: ${recipe.proteinPerServing.toFixed(2)}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-8 recipe__calories">
-                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
-                </div>
-            </div>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 recipe__servings">
+            Number of servings: ${getServingOptions(recipe)}
         </div>
     </div>
 `}
@@ -221,8 +210,8 @@ function getRecipeDetail() {
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <h2 class="page-title">${recipe.name}</h2>
+                    <div class="col-sm-8">
+                        <h2 class="page-title">${recipe.name}<button class="btn btn-info edit-recipe-btn" onclick="location.href='./editrecipe.html?id=${recipeIdParam}';">Edit Recipe</button></h2>
                     </div>
                 </div>
 
@@ -277,15 +266,6 @@ function getRecipeDetail() {
                     `;
                 })
             })
-
-            document.getElementById("save-recipe").innerHTML = `
-            <div class="row save-button-row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-1 save-recipe">
-                    <button class="btn btn-info" onclick="location.href='./editrecipe.html?id=${recipeIdParam}';">Edit Recipe</button>
-                </div>
-            </div>
-            `
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
@@ -306,8 +286,8 @@ function getRecipeDetailForEdit() {
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <h2 class="page-title">${recipe.name}</h2>
+                    <div class="col-sm-8">
+                        <h2 class="page-title">${recipe.name}<button class="btn btn-info save-recipe-btn" onclick="saveRecipe()">Save Recipe</button></h2>
                     </div>
                 </div>
 
@@ -315,8 +295,8 @@ function getRecipeDetailForEdit() {
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-3">Add Ingredients</div>
-                    <div class="col-sm-5">Instructions</div>
+                    <div class="col-sm-3" id="ingredient-title">Add Ingredients</div>
+                    <div class="col-sm-5" id="instruction-title">Instructions</div>
                     <br>
                     <br>
                 </div>
@@ -364,15 +344,6 @@ function getRecipeDetailForEdit() {
                     `;
                 })
             })
-
-            document.getElementById("save-recipe").innerHTML = `
-            <div class="row save-button-row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-1 save-recipe">
-                    <button class="btn btn-info" onclick="saveRecipe()">Save Recipe</button>
-                </div>
-            </div>
-            `
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
@@ -406,20 +377,48 @@ function addRecipe() {
 
 }
 
+function unitOptions(ingredientValue) {
+    var xhr = new XMLHttpRequest();
+    var ingredientId = ingredientValue.split(".")[0];
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            ingredient = JSON.parse(this.responseText);
+
+            let unitString = document.getElementById("ingredient-unit")
+            if (ingredient.density != 0 || ingredient.name.includes("WATER") && !ingredient.name.includes("FRESHWATER")) {
+                unitString.innerHTML = `
+                    <option value="gr">gr</option>
+                    <option value="ml">ml</option>
+                    <option value="tbsp">tbsp</option>
+                    <option value="tsp">tsp</option>
+                    <option value="cup">cup</option>
+        
+                `;
+            } else {
+                unitString.innerHTML = `
+                    <option value="gr">gr</option>
+                    
+                `;
+            }
+        }
+    }
+    xhr.open("get", url + "findingredientbyid/" + ingredientId, true);
+    xhr.send();
+}
+
 async function getAllIngredients() {
     const response = await fetch(url + "allingredients");
     const ingredients = await response.json();
     document.getElementById("table-add-ingredients").innerHTML = `
         <tr>
         <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
-            <td><select class="input-unit" id="ingredient-unit">
-                    <option value="gr">gr</option>
-                    <option value="ml">ml</option>
-                    <option value="tbsp">tbsp</option>
-                    <option value="tsp">tsp</option>
-                    <option value="cup">cup</option>
-                </select></td>
-            <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+            <td>
+                <select class="input-unit" id="ingredient-unit">
+                </select>
+            </td>
+            <td>
+                <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
                 <datalist id='ingredientList'></datalist>
                 <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
             </td>
@@ -427,20 +426,24 @@ async function getAllIngredients() {
         `
     const ingredientListEl = document.getElementById('ingredientList');
 
-    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
+    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE" class="ingredient-list" selected></option>';
     ingredients.forEach(ingredient => {
+
         optionsString += `
-            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
+            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item" ></option>
         `;
-    })
+    });
 
     ingredientListEl.innerHTML = optionsString;
 
+    const selectedIngredient = document.getElementById("ingredientList-input");
+    selectedIngredient.addEventListener("change", (ev) => {
+        unitOptions(selectedIngredient.value);
+    });
 }
 
 function addIngredientToDB() {
     var ingredient = {};
-    ingredient.id = 10;
     ingredient.name = document.getElementById('ingredient-name-input').value;
     ingredient.calories = document.getElementById('ingredient-calories-input').value;
     ingredient.carbs = document.getElementById('ingredient-carbs-input').value;
@@ -452,17 +455,9 @@ function addIngredientToDB() {
     var ingredientJSON = JSON.stringify(ingredient);
     console.log(ingredientJSON);
 
-    //todo
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            /* document.getElementById("added-ingredients").innerHTML += `
-            <tr>
-                <td>${recipeIngredient.amount}</td>
-                <td>${recipeIngredient.unit.toLowerCase()}</td>
-                <td>${ingredientName}</td>
-            </tr>
-            `;-->*/
             location.reload();
         }
     }
@@ -490,12 +485,11 @@ function addIngredients() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-
             document.getElementById("added-ingredients").innerHTML += `
             <tr>
                 <td>${recipeIngredient.amount}</td>
                 <td>${recipeIngredient.unit.toLowerCase()}</td>
-                <td>${ingredientName}</td>
+                <td>${ingredientName.toLowerCase()}</td>
             </tr>
             `;
         }
