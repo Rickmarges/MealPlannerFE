@@ -377,20 +377,48 @@ function addRecipe() {
 
 }
 
+function unitOptions(ingredientValue) {
+    var xhr = new XMLHttpRequest();
+    var ingredientId = ingredientValue.split(".")[0];
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            ingredient = JSON.parse(this.responseText);
+
+            let unitString = document.getElementById("ingredient-unit")
+            if (ingredient.density != 0 || ingredient.name.includes("WATER") && !ingredient.name.includes("FRESHWATER")) {
+                unitString.innerHTML = `
+                    <option value="gr">gr</option>
+                    <option value="ml">ml</option>
+                    <option value="tbsp">tbsp</option>
+                    <option value="tsp">tsp</option>
+                    <option value="cup">cup</option>
+        
+                `;
+            } else {
+                unitString.innerHTML = `
+                    <option value="gr">gr</option>
+                    
+                `;
+            }
+        }
+    }
+    xhr.open("get", url + "findingredientbyid/" + ingredientId, true);
+    xhr.send();
+}
+
 async function getAllIngredients() {
     const response = await fetch(url + "allingredients");
     const ingredients = await response.json();
     document.getElementById("table-add-ingredients").innerHTML = `
         <tr>
         <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
-            <td><select class="input-unit" id="ingredient-unit">
-                    <option value="gr">gr</option>
-                    <option value="ml">ml</option>
-                    <option value="tbsp">tbsp</option>
-                    <option value="tsp">tsp</option>
-                    <option value="cup">cup</option>
-                </select></td>
-            <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+            <td>
+                <select class="input-unit" id="ingredient-unit">
+                </select>
+            </td>
+            <td>
+                <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
                 <datalist id='ingredientList'></datalist>
                 <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
             </td>
@@ -398,15 +426,20 @@ async function getAllIngredients() {
         `
     const ingredientListEl = document.getElementById('ingredientList');
 
-    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE" class="ingredient-list"></option>';
+    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE" class="ingredient-list" selected></option>';
     ingredients.forEach(ingredient => {
+
         optionsString += `
-            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
+            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item" ></option>
         `;
-    })
+    });
 
     ingredientListEl.innerHTML = optionsString;
 
+    const selectedIngredient = document.getElementById("ingredientList-input");
+    selectedIngredient.addEventListener("change", (ev) => {
+        unitOptions(selectedIngredient.value);
+    });
 }
 
 function addIngredientToDB() {

@@ -115,6 +115,11 @@ li.ingredient-name {
 }
 
 .input-unit {
+    width: 50px;
+    height: 35px;
+}
+
+.input-unit {
     height: 35px;
 }
 
