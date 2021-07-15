@@ -189,16 +189,13 @@ option:empty {
 }
 
 #nutrition-title {
-    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 10px;
 }
 
-.nutrition-values-recipe {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.nutrition-values-recipe-first {
-    padding-right: 15px;
+.nutrition-values-per-serving {
+    display: flex;
+    justify-content: space-between;
 }
 
 .edit-recipe-btn, .save-recipe-btn {

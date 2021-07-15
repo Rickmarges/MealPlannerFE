@@ -74,18 +74,15 @@ function recipeDetailTemplate(recipe) {
 
             <div class="row">
                 <div class="col-sm-12 nutrition-values-per-serving">
-                    <text class="nutrition-values-recipe-first">Carbs: ${recipe.carbsPerServing.toFixed(2)}</text>
-                    |
-                    <text class="nutrition-values-recipe">Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}</text>
-                    |
-                    <text class="nutrition-values-recipe">Fats: ${recipe.fatsPerServing.toFixed(2)}</text>
-                    |
-                    <text class="nutrition-values-recipe">Protein: ${recipe.proteinPerServing.toFixed(2)}</text>
-                    |
-                    <text class="nutrition-values-recipe">Calories: ${recipe.caloriesPerServing.toFixed(2)}</text>
-                    
-                    
-                    </div>
+                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Fats: ${recipe.fatsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Protein: ${recipe.proteinPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
                 </div>
             </div>
         </div>
