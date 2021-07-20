@@ -37,17 +37,15 @@ function getServingOptions(recipe) {
         `
     optionlist20.forEach(number => {
 
-        optionString += `<option value="${number}">${number}</option>`
-
-        // if (number == recipe.servings) {
-        //     optionString += `
-        //     <option value="${number}" selected>${number}<option>
-        //     `;
-        // } else {
-        //     optionString += `
-        //     <option value="${number}">${number}</option>
-        //     `
-        // }
+        if (number == recipe.servings) {
+            optionString += `
+            <option value="${number}" selected>${number}<option>
+            `;
+        } else {
+            optionString += `
+            <option value="${number}">${number}</option>
+            `
+        }
     })
 
     optionString += `
@@ -379,6 +377,9 @@ function getRecipeDetailForEdit() {
 
             document.getElementById("edit-recipe-instructions-input").value = recipe.instructions;
             document.getElementById("edit-recipe-description-input").value = recipe.description;
+
+            selectedNumServings = document.getElementById("selected-number-of-servings").value;
+            console.log(selectedNumServings)
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);

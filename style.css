@@ -211,6 +211,8 @@ option:empty {
 #recipe-name-input-edit {
     width: 700px;
     height: 35px;
+    font-size: medium;
+    padding: 5px;
 }
 
 #pencil {
@@ -219,8 +221,11 @@ option:empty {
 
 #edit-recipe-instructions-input {
     width: 100%;
+    height: 200px;
+    padding: 5px;
 }
 
 #edit-recipe-description-input {
     width: 100%;
+    padding: 5px;
 }
