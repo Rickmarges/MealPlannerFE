@@ -207,3 +207,20 @@ option:empty {
     text-align: justify;
     padding-bottom: 15px;
 }
+
+#recipe-name-input-edit {
+    width: 700px;
+    height: 35px;
+}
+
+#pencil {
+    margin-right: 10px;
+}
+
+#edit-recipe-instructions-input {
+    width: 100%;
+}
+
+#edit-recipe-description-input {
+    width: 100%;
+}

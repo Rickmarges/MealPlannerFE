@@ -36,25 +36,30 @@ function getServingOptions(recipe) {
             <select id="selected-number-of-servings" class="number-of-servings-dropdown">
         `
     optionlist20.forEach(number => {
-        if (recipe.servings == number) {
-            optionString += `
-            <option value="${number}" selected>${number}<option>
-            `;
-        } else {
-            optionString += `
-            <option value="${number}">${number}</option>
-            `
-        }
+
+        optionString += `<option value="${number}">${number}</option>`
+
+        // if (number == recipe.servings) {
+        //     optionString += `
+        //     <option value="${number}" selected>${number}<option>
+        //     `;
+        // } else {
+        //     optionString += `
+        //     <option value="${number}">${number}</option>
+        //     `
+        // }
     })
 
     optionString += `
         </select>
     `
+
     return optionString
 }
 
 function recipeDetailTemplate(recipe) {
-    return `
+
+    var template = `
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
@@ -93,7 +98,68 @@ function recipeDetailTemplate(recipe) {
             Number of servings: ${getServingOptions(recipe)}
         </div>
     </div>
-`}
+    `
+    //console.log(document.getElementById("selected-number-of-servings").selectedIndex);
+
+    return template
+
+}
+
+function editRecipeDetailTemplate(recipe) {
+
+    var template = `
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+        <div class="col-sm-5">
+            
+            <div class="row">
+                <div class="col-sm-12 recipe-description">
+                    <textarea id="edit-recipe-description-input" class="edit-input-recipe" value=""></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 nutrition-values" id="nutrition-title">
+                    Nutrion values per serving
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 nutrition-values-per-serving">
+                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Fats: ${recipe.fatsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Protein: ${recipe.proteinPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 recipe__servings">
+            Number of servings: ${getServingOptions(recipe)}
+        </div>
+    </div>
+    `
+    // var editedRecipe = {};
+    // editedRecipe.name = document.getElementById('recipe-name-input').value;
+    // editedRecipe.servings = document.getElementById('servings-input').value;
+    // editedRecipe.description = document.getElementById('recipe-description-input').value;
+    // editedRecipe.instructions = document.getElementById('recipe-instructions-input').value;
+    // editedRecipe.breakfast = document.getElementById('recipe-mealtype-input-breakfast').checked;
+    // editedRecipe.lunch = document.getElementById('recipe-mealtype-input-lunch').checked;
+    // editedRecipe.dinner = document.getElementById('recipe-mealtype-input-dinner').checked;
+    // editedRecipe.picture = document.getElementById('recipe-picture-url-input').value;
+
+    return template
+
+}
 
 function ingredientAndInstructionsTemplate() {
     return `
@@ -284,11 +350,11 @@ function getRecipeDetailForEdit() {
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <h2 class="page-title">${recipe.name}<button class="btn btn-info save-recipe-btn" onclick="saveRecipe()">Save Recipe</button></h2>
+                        <h2 class="recipe-name-edit"><input id="recipe-name-input-edit" class="input-recipe" value="${recipe.name}" required><button class="btn btn-info save-recipe-btn" onclick="saveRecipe()">Save Recipe</button></h2>
                     </div>
                 </div>
 
-                ${recipeDetailTemplate(recipe)}
+                ${editRecipeDetailTemplate(recipe)}
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
@@ -303,48 +369,31 @@ function getRecipeDetailForEdit() {
             recipeIngredients.forEach(recipeIngredient => {
                 document.getElementById("added-ingredients").innerHTML += `
                 <tr>
+                    <td>${recipeIngredient.ingredient.name.toLowerCase()}</td>
                     <td>${recipeIngredient.amount}</td>
                     <td>${recipeIngredient.unit.toLowerCase()}</td>
-                    <td>${recipeIngredient.ingredient.name}</td>
+                    <td><i class="fas fa-pencil-alt" id="pencil" onclick="getAllIngredientsForEdit(${recipeIngredient.ingredient.id},${recipeIngredient.amount})"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
                 </tr>
                 `;
             });
 
-            var instructionSections = recipe.instructions.split("$");
-            if (instructionSections[0] == "") {
-                instructionSections.shift();
-            }
-
-            instructionSections.forEach(instructionSection => {
-                var sectionName = instructionSection.split("#")[0];
-
-                document.getElementById("instructions").innerHTML += `
-                    <div class="row">
-                        <div class="col-sm-5 instruction-section" id="instruction-section">${sectionName}</div>
-                    </div>
-                    <div class="row">
-                        <ol id="instruction-steps-${sectionName}"></ol>
-                    </div>
-                    `;
-
-                var instructionsSteps = instructionSection.split("#");
-
-                if (instructionsSteps[0] == "") {
-                    instructionsSteps.shift();
-                }
-                instructionsSteps.shift();
-
-                instructionsSteps.forEach(instruction => {
-                    document.getElementById("instruction-steps-" + sectionName).innerHTML += `
-                        <li class="instruction-step-item">${instruction}</li>
-
-                    `;
-                })
-            })
+            document.getElementById("edit-recipe-instructions-input").value = recipe.instructions;
+            document.getElementById("edit-recipe-description-input").value = recipe.description;
         }
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
     xhr.send();
+}
+
+function deleteRecipeIngredient(recipeIngredientId) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        location.reload();
+        return "deleted recipe ingredient with id: " + recipeIngredientId
+    }
+    xhr.open("delete", url + "deleterecipeingredient/" + recipeIngredientId, true);
+    xhr.send();
+
 }
 
 function addRecipe() {
@@ -409,14 +458,18 @@ async function getAllIngredients() {
     const ingredients = await response.json();
     document.getElementById("table-add-ingredients").innerHTML = `
         <tr>
-        <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
-            <td>
-                <select class="input-unit" id="ingredient-unit">
-                </select>
-            </td>
             <td>
                 <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
                 <datalist id='ingredientList'></datalist>
+                
+            </td>
+            <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
+            <td>
+                <select class="input-unit" id="ingredient-unit">
+                </select>
+                
+            </td>
+            <td id="edit-delete-add">
                 <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
             </td>
         <tr>
@@ -429,6 +482,53 @@ async function getAllIngredients() {
         optionsString += `
             <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item" ></option>
         `;
+    });
+
+    ingredientListEl.innerHTML = optionsString;
+
+    const selectedIngredient = document.getElementById("ingredientList-input");
+    selectedIngredient.addEventListener("change", (ev) => {
+        unitOptions(selectedIngredient.value);
+    });
+}
+
+async function getAllIngredientsForEdit(recipeIngredientIngredientId, recipeIngredientAmount) {
+    console.log(recipeIngredientIngredientId)
+    const response = await fetch(url + "allingredients");
+    const ingredients = await response.json();
+    document.getElementById("added-ingredients").innerHTML = `
+        <tr>
+            <td>
+                <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+                <datalist id='ingredientList'></datalist>
+                
+            </td>
+            <td><input class="input-amount" id="ingredient-amount" type="number" min="0" value="${recipeIngredientAmount}"></td>
+            <td>
+                <select class="input-unit" id="ingredient-unit">
+                </select>
+                
+            </td>
+            <td id="edit-delete-add">
+                <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
+            </td>
+        <tr>
+        `
+    const ingredientListEl = document.getElementById('ingredientList');
+
+    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE" class="ingredient-list" selected></option>';
+    ingredients.forEach(ingredient => {
+        if (ingredient.id == recipeIngredientIngredientId) {
+
+            optionsString += `
+                <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item" selected value="${ingredient.id}. ${ingredient.name}"></option>
+            `;
+        } else {
+
+            optionsString += `
+            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item"></option>
+        `
+        }
     });
 
     ingredientListEl.innerHTML = optionsString;
@@ -484,9 +584,10 @@ function addIngredients() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             document.getElementById("added-ingredients").innerHTML += `
             <tr>
+                <td>${ingredientName.toLowerCase()}</td>    
                 <td>${recipeIngredient.amount}</td>
                 <td>${recipeIngredient.unit.toLowerCase()}</td>
-                <td>${ingredientName.toLowerCase()}</td>
+                <td><i class="fas fa-pencil-alt" id="pencil"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
             </tr>
             `;
         }
