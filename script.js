@@ -62,13 +62,6 @@ function recipeDetailTemplate(recipe) {
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
         <div class="col-sm-5">
-            
-            <div class="row">
-                <div class="col-sm-12 recipe-description">
-                    ${recipe.description}
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-sm-12 nutrition-values" id="nutrition-title">
                     Nutrion values per serving
@@ -88,6 +81,20 @@ function recipeDetailTemplate(recipe) {
                     Calories: ${recipe.caloriesPerServing.toFixed(2)}
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-12 description-input-title" id="description-input-title">
+                    Description
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 recipe-description">
+                    ${recipe.description}
+                </div>
+            </div>
+
+            
         </div>
     </div>
     <div class="row">
@@ -110,32 +117,39 @@ function editRecipeDetailTemplate(recipe) {
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
         <div class="col-sm-5">
+        <div class="row">
+            <div class="col-sm-12 nutrition-values" id="nutrition-title">
+                Nutrion values per serving
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 nutrition-values-per-serving">
+                Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                <text class="nutrition-values-recipe">|</text>
+                Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                <text class="nutrition-values-recipe">|</text>
+                Fats: ${recipe.fatsPerServing.toFixed(2)}
+                <text class="nutrition-values-recipe">|</text>
+                Protein: ${recipe.proteinPerServing.toFixed(2)}
+                <text class="nutrition-values-recipe">|</text>
+                Calories: ${recipe.caloriesPerServing.toFixed(2)}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 description-input-title" id="description-input-title">
+                Description
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 recipe-description">
+                <textarea id="edit-recipe-description-input" class="edit-input-recipe" value=""></textarea>
+            </div>
+        </div>
+
             
-            <div class="row">
-                <div class="col-sm-12 recipe-description">
-                    <textarea id="edit-recipe-description-input" class="edit-input-recipe" value=""></textarea>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12 nutrition-values" id="nutrition-title">
-                    Nutrion values per serving
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12 nutrition-values-per-serving">
-                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
-                    <text class="nutrition-values-recipe">|</text>
-                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
-                    <text class="nutrition-values-recipe">|</text>
-                    Fats: ${recipe.fatsPerServing.toFixed(2)}
-                    <text class="nutrition-values-recipe">|</text>
-                    Protein: ${recipe.proteinPerServing.toFixed(2)}
-                    <text class="nutrition-values-recipe">|</text>
-                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
-                </div>
-            </div>
         </div>
     </div>
     <div class="row">
