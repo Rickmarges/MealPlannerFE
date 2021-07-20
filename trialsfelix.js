@@ -11,6 +11,7 @@ function getRequest(callback, url){
             callback(result);
         }
     }
+	console.log("Ik roep nu aan: ",baseUrl+"/"+url)
     xhr.open("get", baseUrl+"/"+url, true);
     xhr.send();
 }
