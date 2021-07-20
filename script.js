@@ -30,40 +30,104 @@ if (ingredientInput != null) {
     });
 }
 
-const recipeTemplate = (recipe) => `
-    <div class="recipe">
-        <div><img src="${recipe.picture}"></div>
-        <div class="recipe__content">
-            <h4 class="recipe__title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
-            <p class="recipe__description">
-                ${recipe.description}
-            </p>
-        </div>
-    </div>
-`;
+function getServingOptions(recipe) {
+    const optionlist20 = Array.from({ length: 20 }, (x, i) => i + 1);
+    var optionString = `
+            <select id="selected-number-of-servings" class="number-of-servings-dropdown">
+        `
+    optionlist20.forEach(number => {
+        if (recipe.servings == number) {
+            optionString += `
+            <option value="${number}" selected>${number}<option>
+            `;
+        } else {
+            optionString += `
+            <option value="${number}">${number}</option>
+            `
+        }
+    })
 
-const recipeDetailTemplate = (recipe) => `
+    optionString += `
+        </select>
+    `
+    return optionString
+}
+
+function recipeDetailTemplate(recipe) {
+    return `
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
-        <div class="col-sm-7">
+        <div class="col-sm-5">
             
             <div class="row">
-                <div class="col-sm-8 recipe__description">
+                <div class="col-sm-12 recipe-description">
                     ${recipe.description}
                 </div>
             </div>
 
             <div class="row">
-                <br>
-                <div class="col-sm-8 recipe__servings">
-                    Number of servings: ${recipe.servings}
+                <div class="col-sm-12 nutrition-values" id="nutrition-title">
+                    Nutrion values per serving
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-sm-12 nutrition-values-per-serving">
+                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Fats: ${recipe.fatsPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Protein: ${recipe.proteinPerServing.toFixed(2)}
+                    <text class="nutrition-values-recipe">|</text>
+                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
+                </div>
+            </div>
         </div>
     </div>
-`;
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 recipe__servings">
+            Number of servings: ${getServingOptions(recipe)}
+        </div>
+    </div>
+`}
+
+function ingredientAndInstructionsTemplate() {
+    return `
+    <div class="row">
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3" id="ingredient-title">Ingredients</div>
+        <div class="col-sm-5" id="instruction-title">Instructions</div>
+        <br>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3 recipe-ingredients" id="ingredient-items"><ul id="ingredient-list-items"></ul></div>
+        <div class="col-sm-5 recipe-instructions" id="recipe-instructions"></div>
+    </div>
+`}
+
+function updateIngredientsNumServings(recipe, selectedNumServings) {
+    // selectedNumServings = document.getElementById("selected-number-of-servings").value;
+    var recipeIngredients = recipe.recipeIngredients;
+    document.getElementById("ingredient-list-items").innerHTML = "";
+    recipeIngredients.forEach(recipeIngredient => {
+        var ingredient = recipeIngredient.ingredient;
+
+        var ingredientAmountPerServing = recipeIngredient.amount / recipe.servings;
+        var ingredientAmountPerSelectedServing = ingredientAmountPerServing * selectedNumServings;
+
+        document.getElementById("ingredient-list-items").innerHTML +=
+            `
+                <li class="ingredient-name">${ingredientAmountPerSelectedServing} ${recipeIngredient.unit} ${ingredient.name}</li>
+        `;
+    })
+}
 
 function getAllRecipes() {
     var xhr = new XMLHttpRequest();
@@ -76,7 +140,6 @@ function getAllRecipes() {
     xhr.open("get", url + "allrecipes", true);
     xhr.send();
 }
-
 
 function findRecipesByName(recipeName = "") {
     if (isEmptyOrSpaces(recipeName)) {
@@ -115,18 +178,21 @@ function findRecipesByIngredient(ingredientName = "") {
 
 function findRecipesByMealType() {
     var mealtype = document.getElementById("search-recipe-by-mealtype").value;
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            var recipes = JSON.parse(this.responseText);
-            paginatedRecipeEl.recipes = recipes;
+    if (mealtype != "") {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                var recipes = JSON.parse(this.responseText);
+                paginatedRecipeEl.recipes = recipes;
 
+            }
         }
+        xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);
+        xhr.send();
+    } else {
+        getAllRecipes();
     }
-    xhr.open("get", url + "findrecipesbymealtype/" + mealtype, true);
-    xhr.send();
 }
-
 
 function getRecipeDetail() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -136,60 +202,66 @@ function getRecipeDetail() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
-            console.log(recipe);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <h2 class="page-title">${recipe.name}</h2>
+                    <div class="col-sm-8">
+                        <h2 class="page-title">${recipe.name}<button class="btn btn-info edit-recipe-btn" onclick="location.href='./editrecipe.html?id=${recipeIdParam}';">Edit Recipe</button></h2>
                     </div>
                 </div>
 
                 ${recipeDetailTemplate(recipe)}
-        
-                <div class="row">
-                    <br>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3" id="ingredient-title">Ingredients</div>
-                    <div class="col-sm-5" id="instruction-title">Instructions</div>
-                    <br>
-                    <br>
-                    </div>
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-3 recipe__ingredients" id="ingredient-items"></div>
-                    <div class="col-sm-5 recipe_instructions" id="recipe-instructions">
-                        <div class="row">
-                            <ol id="instruction-steps"></ol>
-                        </div>
-                    </div>
-                </div>
-
+                ${ingredientAndInstructionsTemplate()}
             `;
+
+            const selectedNumServings = document.getElementById("selected-number-of-servings");
+            selectedNumServings.addEventListener("change", (ev) => {
+                updateIngredientsNumServings(recipe, selectedNumServings.value);
+            })
+            console.log(selectedNumServings.value);
             var recipeIngredients = recipe.recipeIngredients;
             recipeIngredients.forEach(recipeIngredient => {
                 var ingredient = recipeIngredient.ingredient;
-                document.getElementById("ingredient-items").innerHTML +=
-                    `
-                            <ul>
-                                <li class="ingredient-name">${recipeIngredient.amount} ${recipeIngredient.unit} ${ingredient.name}</li>
-                            </ul>
+                var ingredientAmountPerServing = recipeIngredient.amount / recipe.servings;
+                var ingredientAmountPerSelectedServing = ingredientAmountPerServing * selectedNumServings.value;
+                document.getElementById("ingredient-list-items").innerHTML += `
+                        <li class="ingredient-name">${ingredientAmountPerSelectedServing} ${recipeIngredient.unit} ${ingredient.name}</li>
                 `;
             })
-            var instructions = recipe.instructions.split("#");
 
-            if (instructions[0] == "") {
-                instructions.shift();
+
+            var instructionSections = recipe.instructions.split("$");
+            if (instructionSections[0] == "") {
+                instructionSections.shift();
             }
-            document.getElementById("instruction-steps").innerHTML += ""
-            instructions.forEach(instruction => {
-                document.getElementById("instruction-steps").innerHTML += `
-                    
-                            <li class="instruction-step-item">${instruction}</li>
 
-                `;
+            instructionSections.forEach(instructionSection => {
+                var sectionName = instructionSection.split("#")[0];
+
+                document.getElementById("recipe-instructions").innerHTML += `
+                    <div class="row">
+                        <div class="col-sm-5 instruction-section" id="instruction-section">${sectionName}</div>
+                    </div>
+                    <div class="row">
+                        <ol id="instruction-steps-${sectionName}"></ol>
+                    </div>
+                    `;
+
+                var instructionsSteps = instructionSection.split("#");
+
+                if (instructionsSteps[0] == "") {
+                    instructionsSteps.shift();
+                }
+                instructionsSteps.shift();
+
+                instructionsSteps.forEach(instruction => {
+                    document.getElementById("instruction-steps-" + sectionName).innerHTML += `
+                        <li class="instruction-step-item">${instruction}</li>
+
+                    `;
+                })
             })
         }
     }
@@ -205,13 +277,14 @@ function getRecipeDetailForEdit() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
+
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-6">
-                        <h2 class="page-title">${recipe.name}</h2>
+                    <div class="col-sm-8">
+                        <h2 class="page-title">${recipe.name}<button class="btn btn-info save-recipe-btn" onclick="saveRecipe()">Save Recipe</button></h2>
                     </div>
                 </div>
 
@@ -219,32 +292,54 @@ function getRecipeDetailForEdit() {
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
-                    <div class="col-sm-3">Add Ingredients</div>
-                    <div class="col-sm-5">Instructions</div>
+                    <div class="col-sm-3" id="ingredient-title">Add Ingredients</div>
+                    <div class="col-sm-5" id="instruction-title">Instructions</div>
                     <br>
                     <br>
                 </div>
                 
             `;
-            document.getElementById("instructions").innerHTML = `
-            <div class="row">
-                    <div class="col-sm-12 recipe_instructions" id="recipe-instructions">
-                        <div class="row">
-                            <ol id="instruction-steps"></ol>
-                        </div>
-                    </div>
-                </div>
-            `;
-            var instructions = recipe.instructions.split("#");
-
-            if (instructions[0] == "") {
-                instructions.shift();
-            }
-            document.getElementById("instruction-steps").innerHTML += ""
-            instructions.forEach(instruction => {
-                document.getElementById("instruction-steps").innerHTML += `
-                    <li class="instruction-step-item">${instruction}</li>
+            var recipeIngredients = recipe.recipeIngredients;
+            recipeIngredients.forEach(recipeIngredient => {
+                document.getElementById("added-ingredients").innerHTML += `
+                <tr>
+                    <td>${recipeIngredient.amount}</td>
+                    <td>${recipeIngredient.unit.toLowerCase()}</td>
+                    <td>${recipeIngredient.ingredient.name}</td>
+                </tr>
                 `;
+            });
+
+            var instructionSections = recipe.instructions.split("$");
+            if (instructionSections[0] == "") {
+                instructionSections.shift();
+            }
+
+            instructionSections.forEach(instructionSection => {
+                var sectionName = instructionSection.split("#")[0];
+
+                document.getElementById("instructions").innerHTML += `
+                    <div class="row">
+                        <div class="col-sm-5 instruction-section" id="instruction-section">${sectionName}</div>
+                    </div>
+                    <div class="row">
+                        <ol id="instruction-steps-${sectionName}"></ol>
+                    </div>
+                    `;
+
+                var instructionsSteps = instructionSection.split("#");
+
+                if (instructionsSteps[0] == "") {
+                    instructionsSteps.shift();
+                }
+                instructionsSteps.shift();
+
+                instructionsSteps.forEach(instruction => {
+                    document.getElementById("instruction-steps-" + sectionName).innerHTML += `
+                        <li class="instruction-step-item">${instruction}</li>
+
+                    `;
+                })
             })
         }
     }
@@ -279,6 +374,35 @@ function addRecipe() {
 
 }
 
+function unitOptions(ingredientValue) {
+    var xhr = new XMLHttpRequest();
+    var ingredientId = ingredientValue.split(".")[0];
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            ingredient = JSON.parse(this.responseText);
+
+            let unitString = document.getElementById("ingredient-unit")
+            if (ingredient.density != 0 || ingredient.name.includes("WATER") && !ingredient.name.includes("FRESHWATER")) {
+                unitString.innerHTML = `
+                    <option value="gr">gr</option>
+                    <option value="ml">ml</option>
+                    <option value="tbsp">tbsp</option>
+                    <option value="tsp">tsp</option>
+                    <option value="cup">cup</option>
+        
+                `;
+            } else {
+                unitString.innerHTML = `
+                    <option value="gr">gr</option>
+                    
+                `;
+            }
+        }
+    }
+    xhr.open("get", url + "findingredientbyid/" + ingredientId, true);
+    xhr.send();
+}
 
 async function getAllIngredients() {
     const response = await fetch(url + "allingredients");
@@ -286,14 +410,12 @@ async function getAllIngredients() {
     document.getElementById("table-add-ingredients").innerHTML = `
         <tr>
         <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
-            <td><select class="input-unit" id="ingredient-unit">
-                    <option value="gr">gr</option>
-                    <option value="ml">ml</option>
-                    <option value="tbsp">tbsp</option>
-                    <option value="tsp">tsp</option>
-                    <option value="cup">cup</option>
-                </select></td>
-            <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
+            <td>
+                <select class="input-unit" id="ingredient-unit">
+                </select>
+            </td>
+            <td>
+                <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
                 <datalist id='ingredientList'></datalist>
                 <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
             </td>
@@ -301,20 +423,24 @@ async function getAllIngredients() {
         `
     const ingredientListEl = document.getElementById('ingredientList');
 
-    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
+    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE" class="ingredient-list" selected></option>';
     ingredients.forEach(ingredient => {
+
         optionsString += `
-            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
+            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item" ></option>
         `;
-    })
+    });
 
     ingredientListEl.innerHTML = optionsString;
 
+    const selectedIngredient = document.getElementById("ingredientList-input");
+    selectedIngredient.addEventListener("change", (ev) => {
+        unitOptions(selectedIngredient.value);
+    });
 }
 
 function addIngredientToDB() {
     var ingredient = {};
-    ingredient.id = 10;
     ingredient.name = document.getElementById('ingredient-name-input').value;
     ingredient.calories = document.getElementById('ingredient-calories-input').value;
     ingredient.carbs = document.getElementById('ingredient-carbs-input').value;
@@ -326,17 +452,9 @@ function addIngredientToDB() {
     var ingredientJSON = JSON.stringify(ingredient);
     console.log(ingredientJSON);
 
-    //todo
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            /* document.getElementById("added-ingredients").innerHTML += `
-            <tr>
-                <td>${recipeIngredient.amount}</td>
-                <td>${recipeIngredient.unit.toLowerCase()}</td>
-                <td>${ingredientName}</td>
-            </tr>
-            `;-->*/
             location.reload();
         }
     }
@@ -344,50 +462,6 @@ function addIngredientToDB() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(ingredientJSON);
 }
-
-/*
-function getAllIngredients1(newRecipe) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const recipeIdParam = urlParams.get("id");
-    console.log(recipeIdParam);
-    // window.location.href = "./editrecipe.html?id=" + newRecipe.id;
-    var xhr = new XMLHttpRequest();
-    console.log("in get ingredient")
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            var ingredients = JSON.parse(this.responseText);
-            document.getElementById("table-add-ingredients").innerHTML = `
-
-            <tr>
-            <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
-                <td><select class="input-unit" id="ingredient-unit">
-                        <option value="gr">gr</option>
-                        <option value="ml">ml</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="tsp">tsp</option>
-                        <option value="cup">cup</option>
-                    </select></td>
-                <td><input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
-                    <datalist id='ingredientList'></datalist>
-                    <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
-                </td>
-            <tr>
-            `
-
-            const ingredientListEl = document.getElementById('ingredientList');
-
-            let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE"></option>';
-            ingredients.forEach(ingredient => {
-                optionsString += `
-            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list"></option>
-        `;
-            })
-
-            ingredientListEl.innerHTML = optionsString;
-        }
-    }
-}
-*/
 
 function addIngredients() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -412,7 +486,7 @@ function addIngredients() {
             <tr>
                 <td>${recipeIngredient.amount}</td>
                 <td>${recipeIngredient.unit.toLowerCase()}</td>
-                <td>${ingredientName}</td>
+                <td>${ingredientName.toLowerCase()}</td>
             </tr>
             `;
         }
@@ -422,7 +496,20 @@ function addIngredients() {
     xhr.send(recipeIngredientJson);
 }
 
+function saveRecipe() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            window.location.href = "./recipe.html?id=" + recipeIdParam;
+        }
+    }
+    xhr.open("post", url + "finishrecipe/" + recipeIdParam);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
 
 function isEmptyOrSpaces(str) {
     return str === null || str.match(/^ *$/) !== null;

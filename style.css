@@ -115,6 +115,11 @@ li.ingredient-name {
 }
 
 .input-unit {
+    width: 50px;
+    height: 35px;
+}
+
+.input-unit {
     height: 35px;
 }
 
@@ -167,4 +172,38 @@ select.search-input {
 
 .recipe__title {
     margin-top: 0;
+}
+
+.save-button-row {
+    margin-top: 50px;
+}
+
+option:empty {
+  display:none;
+}
+
+#ingredient-title, #instruction-title, #nutrition-title{
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#nutrition-title {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.nutrition-values-per-serving {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-recipe-btn, .save-recipe-btn {
+    float: right;
+    width: 125px;
+}
+
+.instruction-step-item, .recipe-description {
+    text-align: justify;
+    padding-bottom: 15px;
 }
