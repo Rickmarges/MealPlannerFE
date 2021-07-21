@@ -44,6 +44,19 @@ class PaginatedRecipes extends HTMLElement {
           <div><img src="${recipe.picture}"></div>
           <div class="recipe__content">
               <h4 class="recipe__title"><a href="./recipe.html?id=${recipe.id}">${recipe.name}</a></h4>
+              
+                <div class="nutrition-values-per-serving">
+                    Carbs: ${recipe.carbsPerServing.toFixed(2)} gr
+                    <text class="nutrition-values-recipe">|</text>
+                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)} gr
+                    <text class="nutrition-values-recipe">|</text>
+                    Fats: ${recipe.fatsPerServing.toFixed(2)} gr
+                    <text class="nutrition-values-recipe">|</text>
+                    Protein: ${recipe.proteinPerServing.toFixed(2)} gr
+                    <text class="nutrition-values-recipe">|</text>
+                    Calories: ${recipe.caloriesPerServing.toFixed(2)} 
+                </div>
+
               <p class="recipe__description">
                   ${recipe.description}
               </p>
