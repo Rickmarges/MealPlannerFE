@@ -26,18 +26,19 @@
             const diffTime = Math.abs(enddate - startdate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             console.log(diffDays);
-            gebi("van").innerHTML = mealPlan.start;
-            gebi("tot").innerHTML = mealPlan.end;
             for(var x = 0; x < diffDays +1; x++){
-                gebi("lijstMealsOfMealPlan").innerHTML += "een meal<br>"
+				var date = new Date;
+				date.setDate(startdate.getDate() + x);
+				gebi("lijstMealsOfMealPlan").innerHTML += date.toDateString()+"<br>"
+                gebi("lijstMealsOfMealPlan").innerHTML += "breakfast<br>"
+				gebi("lijstMealsOfMealPlan").innerHTML += "lunch<br>"
+				gebi("lijstMealsOfMealPlan").innerHTML += "dinner<br>"
             }
         }
     </script>
 </head>
 
 <body>
-Van<span id="van"></span>
-Tot<span id="tot"></span>
 <div id=lijstMealsOfMealPlan>
 
 </div>
