@@ -39,7 +39,7 @@ function getServingOptions(recipe) {
 
         if (number == recipe.servings) {
             optionString += `
-            <option value="${number}" selected>${number}<option>
+            <option value="${number}" selected>${number}</option>
             `;
         } else {
             optionString += `
@@ -70,15 +70,15 @@ function recipeDetailTemplate(recipe) {
 
             <div class="row">
                 <div class="col-sm-12 nutrition-values-per-serving">
-                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                    Carbs: ${recipe.carbsPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Fats: ${recipe.fatsPerServing.toFixed(2)}
+                    Fats: ${recipe.fatsPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Protein: ${recipe.proteinPerServing.toFixed(2)}
+                    Protein: ${recipe.proteinPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
+                    Calories: ${recipe.caloriesPerServing.toFixed(2)} 
                 </div>
             </div>
 
@@ -93,6 +93,15 @@ function recipeDetailTemplate(recipe) {
                     ${recipe.description}
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12 nutrition-values" id="meal-types-title">
+                    Meal types
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 meal-types" id="get-meal-types"></div>
+            </div>
 
             
         </div>
@@ -104,7 +113,6 @@ function recipeDetailTemplate(recipe) {
         </div>
     </div>
     `
-    //console.log(document.getElementById("selected-number-of-servings").selectedIndex);
 
     return template
 
@@ -125,15 +133,15 @@ function editRecipeDetailTemplate(recipe) {
 
         <div class="row">
             <div class="col-sm-12 nutrition-values-per-serving">
-                Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                Carbs: ${recipe.carbsPerServing.toFixed(2)} gr
                 <text class="nutrition-values-recipe">|</text>
-                Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)} gr
                 <text class="nutrition-values-recipe">|</text>
-                Fats: ${recipe.fatsPerServing.toFixed(2)}
+                Fats: ${recipe.fatsPerServing.toFixed(2)} gr
                 <text class="nutrition-values-recipe">|</text>
-                Protein: ${recipe.proteinPerServing.toFixed(2)}
+                Protein: ${recipe.proteinPerServing.toFixed(2)} gr
                 <text class="nutrition-values-recipe">|</text>
-                Calories: ${recipe.caloriesPerServing.toFixed(2)}
+                Calories: ${recipe.caloriesPerServing.toFixed(2)} 
             </div>
         </div>
 
@@ -149,6 +157,24 @@ function editRecipeDetailTemplate(recipe) {
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-12 nutrition-values" id="meal-types-title">
+                Meal types
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 meal-types" id="edit-get-meal-types">
+            <div class="row">
+                <div class="col-sm-12">
+                    <input id="recipe-mealtype-input-breakfast-edit" name="mealtypes" type="checkbox" value="breakfast" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-breakfast" class="mealtypes"> Breakfast</label>
+                    <input id="recipe-mealtype-input-lunch-edit" name="mealtypes" type="checkbox" value="lunch" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-lunch" class="mealtypes"> Lunch</label>
+                    <input id="recipe-mealtype-input-dinner-edit" name="mealtypes" type="checkbox" value="dinner" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-dinner" class="mealtypes"> Dinner</label>
+                </div>
+            </div>
+            </div>
+        </div>
+
             
         </div>
     </div>
@@ -159,17 +185,67 @@ function editRecipeDetailTemplate(recipe) {
         </div>
     </div>
     `
-    // var editedRecipe = {};
-    // editedRecipe.name = document.getElementById('recipe-name-input').value;
-    // editedRecipe.servings = document.getElementById('servings-input').value;
-    // editedRecipe.description = document.getElementById('recipe-description-input').value;
-    // editedRecipe.instructions = document.getElementById('recipe-instructions-input').value;
-    // editedRecipe.breakfast = document.getElementById('recipe-mealtype-input-breakfast').checked;
-    // editedRecipe.lunch = document.getElementById('recipe-mealtype-input-lunch').checked;
-    // editedRecipe.dinner = document.getElementById('recipe-mealtype-input-dinner').checked;
-    // editedRecipe.picture = document.getElementById('recipe-picture-url-input').value;
 
     return template
+
+}
+
+function getMealTypesForRecipe(recipe) {
+    let mealTypeString = ``
+    if (recipe.breakfast == true) {
+        mealTypeString += `<i class="far fa-check-square" id="checkmark"></i><text class="mealtype-name">Breakfast</text>`
+    }
+    if (recipe.lunch == true) {
+        mealTypeString += `<i class="far fa-check-square" id="checkmark"></i><text class="mealtype-name">Lunch</text>`
+    }
+    if (recipe.dinner == true) {
+        mealTypeString += `<i class="far fa-check-square" id="checkmark"></i><text class="mealtype-name">Dinner</text>`
+    }
+
+    return mealTypeString;
+
+}
+
+function getMealTypesForRecipeEdit(recipe) {
+    if (recipe.breakfast == true) {
+        document.getElementById("recipe-mealtype-input-breakfast-edit").checked = true;
+    }
+    if (recipe.lunch == true) {
+        document.getElementById("recipe-mealtype-input-lunch-edit").checked = true;
+    }
+    if (recipe.dinner == true) {
+        document.getElementById("recipe-mealtype-input-dinner-edit").checked = true;
+    }
+
+}
+
+function editRecipe(recipe) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+
+    var editedRecipe = {};
+    editedRecipe.name = document.getElementById('recipe-name-input-edit').value;
+    editedRecipe.servings = document.getElementById('selected-number-of-servings').value;
+    editedRecipe.description = document.getElementById('edit-recipe-description-input').value;
+    editedRecipe.instructions = document.getElementById('edit-recipe-instructions-input').value;
+    editedRecipe.breakfast = document.getElementById('recipe-mealtype-input-breakfast-edit').checked;
+    editedRecipe.lunch = document.getElementById('recipe-mealtype-input-lunch-edit').checked;
+    editedRecipe.dinner = document.getElementById('recipe-mealtype-input-dinner-edit').checked;
+    editedRecipe.picture = recipe.picture;
+
+    var editedRecipeJson = JSON.stringify(editedRecipe);
+
+    console.log(editedRecipe.name);
+    console.log(editedRecipe.servings);
+    console.log(editedRecipe.description);
+    console.log(editedRecipe.instructions);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+    }
+    xhr.open("put", url + "editrecipe/" + recipeIdParam, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(editedRecipeJson);
 
 }
 
@@ -279,6 +355,7 @@ function getRecipeDetail() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+
             var recipe = JSON.parse(this.responseText);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
@@ -294,11 +371,14 @@ function getRecipeDetail() {
                 ${ingredientAndInstructionsTemplate()}
             `;
 
+            document.getElementById("get-meal-types").innerHTML = getMealTypesForRecipe(recipe);
+
+
             const selectedNumServings = document.getElementById("selected-number-of-servings");
             selectedNumServings.addEventListener("change", (ev) => {
                 updateIngredientsNumServings(recipe, selectedNumServings.value);
             })
-            console.log(selectedNumServings.value);
+
             var recipeIngredients = recipe.recipeIngredients;
             recipeIngredients.forEach(recipeIngredient => {
                 var ingredient = recipeIngredient.ingredient;
@@ -355,14 +435,13 @@ function getRecipeDetailForEdit() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
-
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <h2 class="recipe-name-edit"><input id="recipe-name-input-edit" class="input-recipe" value="${recipe.name}" required><button class="btn btn-info save-recipe-btn" onclick="saveRecipe()">Save Recipe</button></h2>
+                        <h2 class="recipe-name-edit"><input id="recipe-name-input-edit" class="input-recipe" value="${recipe.name}" required><button class="btn btn-info save-recipe-btn" id="save-btn" onclick="saveRecipe()">Save Recipe</button></h2>
                     </div>
                 </div>
 
@@ -381,10 +460,10 @@ function getRecipeDetailForEdit() {
             recipeIngredients.forEach(recipeIngredient => {
                 document.getElementById("added-ingredients").innerHTML += `
                 <tr>
-                    <td>${recipeIngredient.ingredient.name.toLowerCase()}</td>
-                    <td>${recipeIngredient.amount}</td>
-                    <td>${recipeIngredient.unit.toLowerCase()}</td>
-                    <td><i class="fas fa-pencil-alt" id="pencil" onclick="getAllIngredientsForEdit(${recipeIngredient.ingredient.id},${recipeIngredient.amount})"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
+                    <td id="${recipeIngredient.ingredient.name}">${recipeIngredient.ingredient.name.toLowerCase()}</td>
+                    <td id="${recipeIngredient.amount}">${recipeIngredient.amount}</td>
+                    <td id="${recipeIngredient.unit}">${recipeIngredient.unit.toLowerCase()}</td>
+                    <td id="plus-button"><i class="fas fa-pencil-alt" id="pencil" onclick="${editRecipeIngredient(recipeIngredient)}"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
                 </tr>
                 `;
             });
@@ -392,9 +471,12 @@ function getRecipeDetailForEdit() {
             document.getElementById("edit-recipe-instructions-input").value = recipe.instructions;
             document.getElementById("edit-recipe-description-input").value = recipe.description;
 
+            getMealTypesForRecipeEdit(recipe);
+
+            console.log(document.getElementById("pencil").onclick);
             selectedNumServings = document.getElementById("selected-number-of-servings").value;
-            console.log(selectedNumServings)
         }
+
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
     xhr.send();
@@ -403,8 +485,10 @@ function getRecipeDetailForEdit() {
 function deleteRecipeIngredient(recipeIngredientId) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        location.reload();
-        return "deleted recipe ingredient with id: " + recipeIngredientId
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            window.location.href = window.location.href;
+
+        }
     }
     xhr.open("delete", url + "deleterecipeingredient/" + recipeIngredientId, true);
     xhr.send();
@@ -507,51 +591,17 @@ async function getAllIngredients() {
     });
 }
 
-async function getAllIngredientsForEdit(recipeIngredientIngredientId, recipeIngredientAmount) {
-    console.log(recipeIngredientIngredientId)
-    const response = await fetch(url + "allingredients");
-    const ingredients = await response.json();
-    document.getElementById("added-ingredients").innerHTML = `
-        <tr>
-            <td>
-                <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
-                <datalist id='ingredientList'></datalist>
-                
-            </td>
-            <td><input class="input-amount" id="ingredient-amount" type="number" min="0" value="${recipeIngredientAmount}"></td>
-            <td>
-                <select class="input-unit" id="ingredient-unit">
-                </select>
-                
-            </td>
-            <td id="edit-delete-add">
-                <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
-            </td>
-        <tr>
+async function editRecipeIngredient(recipeIngredient) {
+    console.log(document.getElementById(recipeIngredient.ingredient.name));
+    //document.getElementById("${recipeIngredient.ingredient.name}").innerHTML = recipeIngredient.ingredient.name.toLowerCase()
+
+    document.getElementById(recipeIngredient.amount).innerHTML =
         `
-    const ingredientListEl = document.getElementById('ingredientList');
-
-    let optionsString = '<option value="ADD NEW INGREDIENT TO DATABASE" class="ingredient-list" selected></option>';
-    ingredients.forEach(ingredient => {
-        if (ingredient.id == recipeIngredientIngredientId) {
-
-            optionsString += `
-                <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item" selected value="${ingredient.id}. ${ingredient.name}"></option>
-            `;
-        } else {
-
-            optionsString += `
-            <option value='${ingredient.id}. ${ingredient.name}' class="ingredient-list" id="ingredient-item"></option>
+        <input class="input-amount" id="ingredient-amount" type="number" min="0" value="${recipeIngredient.amount}">
         `
-        }
-    });
 
-    ingredientListEl.innerHTML = optionsString;
+    document.getElementById(recipeIngredient.unit).innerHTML = recipeIngredient.unit
 
-    const selectedIngredient = document.getElementById("ingredientList-input");
-    selectedIngredient.addEventListener("change", (ev) => {
-        unitOptions(selectedIngredient.value);
-    });
 }
 
 function addIngredientToDB() {
@@ -582,7 +632,7 @@ function addIngredients() {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
     recipeIngredient = {}
-    recipeIngredient.amount = parseInt(document.getElementById("ingredient-amount").value);
+    recipeIngredient.amount = parseFloat(document.getElementById("ingredient-amount").value);
     recipeIngredient.unit = document.getElementById("ingredient-unit").value;
     recipeIngredient.recipe = {};
     recipeIngredient.recipe.id = parseInt(recipeIdParam);
@@ -597,14 +647,16 @@ function addIngredients() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(ingredientName);
             document.getElementById("added-ingredients").innerHTML += `
             <tr>
-                <td>${ingredientName.toLowerCase()}</td>    
-                <td>${recipeIngredient.amount}</td>
-                <td>${recipeIngredient.unit.toLowerCase()}</td>
+                <td id="${ingredientName}">${ingredientName.toLowerCase()}</td>
+                <td id="${recipeIngredient.amount}">${recipeIngredient.amount}</td>
+                <td id="${recipeIngredient.unit}">${recipeIngredient.unit.toLowerCase()}</td>
                 <td><i class="fas fa-pencil-alt" id="pencil"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
             </tr>
             `;
+
         }
     }
     xhr.open("post", url + "addrecipeingredient", true);
