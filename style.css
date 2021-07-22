@@ -249,3 +249,11 @@ option:empty {
     margin-left: 5px;
     margin-right: 10px;
 }
+
+#breakfast-meal:hover, #lunch-meal:hover, #dinner-meal:hover {
+    cursor: pointer;
+}
+
+#recipe-list-for-meal {
+    height: 35px;
+}
