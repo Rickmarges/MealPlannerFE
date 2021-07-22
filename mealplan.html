@@ -2,13 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meal Planner</title>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="recipe-title-top">Recipe</title>
     <link rel="stylesheet" href="./style.css" />
-    <script src="trialsfelix.js"></script>
+    <script src="https://kit.fontawesome.com/24e3680989.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
         window.onload = getIdMealPlan;
         function getIdMealPlan(){
@@ -20,28 +27,56 @@
           //  detailsMealPlan();
         }
         function detailsMealPlan(mealPlan){
-            console.log("in detailsMealplan");
+            console.log("in detailsMealplan met id "+mealPlan.id+" van "+mealPlan.start+" tot "+mealPlan.end);
             var startdate = new Date(mealPlan.start);
             var enddate = new Date(mealPlan.end);
+			var breakfast = "breakfast";
+			var lunch = "lunch";
+			var dinner = "dinner";
             const diffTime = Math.abs(enddate - startdate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             console.log(diffDays);
             for(var x = 0; x < diffDays +1; x++){
 				var date = new Date;
 				date.setDate(startdate.getDate() + x);
-				gebi("lijstMealsOfMealPlan").innerHTML += date.toDateString()+"<br>"
-                gebi("lijstMealsOfMealPlan").innerHTML += "breakfast<br>"
-				gebi("lijstMealsOfMealPlan").innerHTML += "lunch<br>"
-				gebi("lijstMealsOfMealPlan").innerHTML += "dinner<br>"
+				var dateString = date.toDateString();
+				gebi("lijstMealsOfMealPlan").innerHTML += dateString+"<br>"
+                gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal(${dateString},${breakfast})">breakfast<br></div>"
+				gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal(${dateString},${lunch})">lunch<br></div>"
+				gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal(${dateString},${dinner})">dinner<br></div>"
             }
         }
     </script>
+	
 </head>
 
 <body>
+<div class="row" id="menu">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="./index.html" class="menu-item">Home</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./allrecipes.html" class="menu-item">Recipes</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./index.html" class="menu-item">Meal Planner</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./index.html" class="menu-item">My Plans</a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="./account.html" class="menu-item">Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
 <div id=lijstMealsOfMealPlan>
 
 </div>
+<script src="trialsfelix.js"></script>
 </body>
 
 </html>
