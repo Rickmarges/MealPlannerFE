@@ -41,9 +41,9 @@
 				date.setDate(startdate.getDate() + x);
 				var dateString = date.toDateString();
 				gebi("lijstMealsOfMealPlan").innerHTML += dateString+"<br>"
-                gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal(${dateString},${breakfast})">breakfast<br></div>"
-				gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal(${dateString},${lunch})">lunch<br></div>"
-				gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal(${dateString},${dinner})">dinner<br></div>"
+                gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal('${dateString}','${breakfast}')">breakfast<br></div>"
+				gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal('${dateString}','${lunch}')">lunch<br></div>"
+				gebi("lijstMealsOfMealPlan").innerHTML += "<div onclick="goToEditMeal('${dateString}','${dinner}')">dinner<br></div>"
             }
         }
     </script>
