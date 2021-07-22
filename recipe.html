@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-control" content="no-cache">
     <title id="recipe-title-top">Recipe</title>
     <link rel="stylesheet" href="./style.css" />
+    <script src="https://kit.fontawesome.com/24e3680989.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -17,7 +19,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body onload="getRecipeDetail()">
     <div class="row" id="menu">
         <div class="col-sm-2"></div>
         <div class="col-sm-10">
@@ -48,8 +50,7 @@
     </div>
     <div class="col-sm-12" id="save-recipe"></div>
     <script src="./script.js"></script>
-    <script src="/node_modules/fraction.js"></script>
-    <script>getRecipeDetail()</script>
+    <script></script>
 </body>
 
 </html>

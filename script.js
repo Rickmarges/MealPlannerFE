@@ -36,9 +36,10 @@ function getServingOptions(recipe) {
             <select id="selected-number-of-servings" class="number-of-servings-dropdown">
         `
     optionlist20.forEach(number => {
-        if (recipe.servings == number) {
+
+        if (number == recipe.servings) {
             optionString += `
-            <option value="${number}" selected>${number}<option>
+            <option value="${number}" selected>${number}</option>
             `;
         } else {
             optionString += `
@@ -50,22 +51,17 @@ function getServingOptions(recipe) {
     optionString += `
         </select>
     `
+
     return optionString
 }
 
 function recipeDetailTemplate(recipe) {
-    return `
+
+    var template = `
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
         <div class="col-sm-5">
-            
-            <div class="row">
-                <div class="col-sm-12 recipe-description">
-                    ${recipe.description}
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-sm-12 nutrition-values" id="nutrition-title">
                     Nutrion values per serving
@@ -74,17 +70,40 @@ function recipeDetailTemplate(recipe) {
 
             <div class="row">
                 <div class="col-sm-12 nutrition-values-per-serving">
-                    Carbs: ${recipe.carbsPerServing.toFixed(2)}
+                    Carbs: ${recipe.carbsPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)}
+                    Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Fats: ${recipe.fatsPerServing.toFixed(2)}
+                    Fats: ${recipe.fatsPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Protein: ${recipe.proteinPerServing.toFixed(2)}
+                    Protein: ${recipe.proteinPerServing.toFixed(2)} gr
                     <text class="nutrition-values-recipe">|</text>
-                    Calories: ${recipe.caloriesPerServing.toFixed(2)}
+                    Calories: ${recipe.caloriesPerServing.toFixed(2)} 
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-12 description-input-title" id="description-input-title">
+                    Description
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 recipe-description">
+                    ${recipe.description}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 nutrition-values" id="meal-types-title">
+                    Meal types
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 meal-types" id="get-meal-types"></div>
+            </div>
+
+            
         </div>
     </div>
     <div class="row">
@@ -93,7 +112,142 @@ function recipeDetailTemplate(recipe) {
             Number of servings: ${getServingOptions(recipe)}
         </div>
     </div>
-`}
+    `
+
+    return template
+
+}
+
+function editRecipeDetailTemplate(recipe) {
+
+    var template = `
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3"><img src="${recipe.picture}" class="recipe-picture"></div>
+        <div class="col-sm-5">
+        <div class="row">
+            <div class="col-sm-12 nutrition-values" id="nutrition-title">
+                Nutrion values per serving
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 nutrition-values-per-serving">
+                Carbs: ${recipe.carbsPerServing.toFixed(2)} gr
+                <text class="nutrition-values-recipe">|</text>
+                Net Carbs: ${recipe.netCarbsPerServing.toFixed(2)} gr
+                <text class="nutrition-values-recipe">|</text>
+                Fats: ${recipe.fatsPerServing.toFixed(2)} gr
+                <text class="nutrition-values-recipe">|</text>
+                Protein: ${recipe.proteinPerServing.toFixed(2)} gr
+                <text class="nutrition-values-recipe">|</text>
+                Calories: ${recipe.caloriesPerServing.toFixed(2)} 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 description-input-title" id="description-input-title">
+                Description
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 recipe-description">
+                <textarea id="edit-recipe-description-input" class="edit-input-recipe" value=""></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 nutrition-values" id="meal-types-title">
+                Meal types
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 meal-types" id="edit-get-meal-types">
+            <div class="row">
+                <div class="col-sm-12">
+                    <input id="recipe-mealtype-input-breakfast-edit" name="mealtypes" type="checkbox" value="breakfast" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-breakfast" class="mealtypes"> Breakfast</label>
+                    <input id="recipe-mealtype-input-lunch-edit" name="mealtypes" type="checkbox" value="lunch" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-lunch" class="mealtypes"> Lunch</label>
+                    <input id="recipe-mealtype-input-dinner-edit" name="mealtypes" type="checkbox" value="dinner" class="input_recipe input-mealtype"><label for="recipe-mealtype-input-dinner" class="mealtypes"> Dinner</label>
+                </div>
+            </div>
+            </div>
+        </div>
+
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 recipe__servings">
+            Number of servings: ${getServingOptions(recipe)}
+        </div>
+    </div>
+    `
+
+    return template
+
+}
+
+function getMealTypesForRecipe(recipe) {
+    let mealTypeString = ``
+    if (recipe.breakfast == true) {
+        mealTypeString += `<i class="far fa-check-square" id="checkmark"></i><text class="mealtype-name">Breakfast</text>`
+    }
+    if (recipe.lunch == true) {
+        mealTypeString += `<i class="far fa-check-square" id="checkmark"></i><text class="mealtype-name">Lunch</text>`
+    }
+    if (recipe.dinner == true) {
+        mealTypeString += `<i class="far fa-check-square" id="checkmark"></i><text class="mealtype-name">Dinner</text>`
+    }
+
+    return mealTypeString;
+
+}
+
+function getMealTypesForRecipeEdit(recipe) {
+    if (recipe.breakfast == true) {
+        document.getElementById("recipe-mealtype-input-breakfast-edit").checked = true;
+    }
+    if (recipe.lunch == true) {
+        document.getElementById("recipe-mealtype-input-lunch-edit").checked = true;
+    }
+    if (recipe.dinner == true) {
+        document.getElementById("recipe-mealtype-input-dinner-edit").checked = true;
+    }
+
+}
+
+function editRecipe(recipe) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeIdParam = urlParams.get("id");
+
+    var editedRecipe = {};
+    editedRecipe.name = document.getElementById('recipe-name-input-edit').value;
+    editedRecipe.servings = document.getElementById('selected-number-of-servings').value;
+    editedRecipe.description = document.getElementById('edit-recipe-description-input').value;
+    editedRecipe.instructions = document.getElementById('edit-recipe-instructions-input').value;
+    editedRecipe.breakfast = document.getElementById('recipe-mealtype-input-breakfast-edit').checked;
+    editedRecipe.lunch = document.getElementById('recipe-mealtype-input-lunch-edit').checked;
+    editedRecipe.dinner = document.getElementById('recipe-mealtype-input-dinner-edit').checked;
+    editedRecipe.picture = recipe.picture;
+
+    var editedRecipeJson = JSON.stringify(editedRecipe);
+
+    console.log(editedRecipe.name);
+    console.log(editedRecipe.servings);
+    console.log(editedRecipe.description);
+    console.log(editedRecipe.instructions);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+    }
+    xhr.open("put", url + "editrecipe/" + recipeIdParam, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(editedRecipeJson);
+
+}
 
 function ingredientAndInstructionsTemplate() {
     return `
@@ -201,6 +355,7 @@ function getRecipeDetail() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+
             var recipe = JSON.parse(this.responseText);
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
@@ -216,11 +371,14 @@ function getRecipeDetail() {
                 ${ingredientAndInstructionsTemplate()}
             `;
 
+            document.getElementById("get-meal-types").innerHTML = getMealTypesForRecipe(recipe);
+
+
             const selectedNumServings = document.getElementById("selected-number-of-servings");
             selectedNumServings.addEventListener("change", (ev) => {
                 updateIngredientsNumServings(recipe, selectedNumServings.value);
             })
-            console.log(selectedNumServings.value);
+
             var recipeIngredients = recipe.recipeIngredients;
             recipeIngredients.forEach(recipeIngredient => {
                 var ingredient = recipeIngredient.ingredient;
@@ -277,18 +435,17 @@ function getRecipeDetailForEdit() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var recipe = JSON.parse(this.responseText);
-
             document.getElementById("recipe-title-top").innerHTML = recipe.name;
             document.getElementById("recipe-detail").innerHTML += `
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <h2 class="page-title">${recipe.name}<button class="btn btn-info save-recipe-btn" onclick="saveRecipe()">Save Recipe</button></h2>
+                        <h2 class="recipe-name-edit"><input id="recipe-name-input-edit" class="input-recipe" value="${recipe.name}" required><button class="btn btn-info save-recipe-btn" id="save-btn" onclick="saveRecipe()">Save Recipe</button></h2>
                     </div>
                 </div>
 
-                ${recipeDetailTemplate(recipe)}
+                ${editRecipeDetailTemplate(recipe)}
                 <div class="row">
                     <br>
                     <div class="col-sm-2"></div>
@@ -303,48 +460,39 @@ function getRecipeDetailForEdit() {
             recipeIngredients.forEach(recipeIngredient => {
                 document.getElementById("added-ingredients").innerHTML += `
                 <tr>
-                    <td>${recipeIngredient.amount}</td>
-                    <td>${recipeIngredient.unit.toLowerCase()}</td>
-                    <td>${recipeIngredient.ingredient.name}</td>
+                    <td id="${recipeIngredient.ingredient.name}">${recipeIngredient.ingredient.name.toLowerCase()}</td>
+                    <td id="${recipeIngredient.amount}">${recipeIngredient.amount}</td>
+                    <td id="${recipeIngredient.unit}">${recipeIngredient.unit.toLowerCase()}</td>
+                    <td id="plus-button"><i class="fas fa-pencil-alt" id="pencil" onclick="${editRecipeIngredient(recipeIngredient)}"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
                 </tr>
                 `;
             });
 
-            var instructionSections = recipe.instructions.split("$");
-            if (instructionSections[0] == "") {
-                instructionSections.shift();
-            }
+            document.getElementById("edit-recipe-instructions-input").value = recipe.instructions;
+            document.getElementById("edit-recipe-description-input").value = recipe.description;
 
-            instructionSections.forEach(instructionSection => {
-                var sectionName = instructionSection.split("#")[0];
+            getMealTypesForRecipeEdit(recipe);
 
-                document.getElementById("instructions").innerHTML += `
-                    <div class="row">
-                        <div class="col-sm-5 instruction-section" id="instruction-section">${sectionName}</div>
-                    </div>
-                    <div class="row">
-                        <ol id="instruction-steps-${sectionName}"></ol>
-                    </div>
-                    `;
-
-                var instructionsSteps = instructionSection.split("#");
-
-                if (instructionsSteps[0] == "") {
-                    instructionsSteps.shift();
-                }
-                instructionsSteps.shift();
-
-                instructionsSteps.forEach(instruction => {
-                    document.getElementById("instruction-steps-" + sectionName).innerHTML += `
-                        <li class="instruction-step-item">${instruction}</li>
-
-                    `;
-                })
-            })
+            console.log(document.getElementById("pencil").onclick);
+            selectedNumServings = document.getElementById("selected-number-of-servings").value;
         }
+
     }
     xhr.open("get", url + "findrecipebyid/" + recipeIdParam, true);
     xhr.send();
+}
+
+function deleteRecipeIngredient(recipeIngredientId) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            window.location.href = window.location.href;
+
+        }
+    }
+    xhr.open("delete", url + "deleterecipeingredient/" + recipeIngredientId, true);
+    xhr.send();
+
 }
 
 function addRecipe() {
@@ -409,14 +557,18 @@ async function getAllIngredients() {
     const ingredients = await response.json();
     document.getElementById("table-add-ingredients").innerHTML = `
         <tr>
-        <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
-            <td>
-                <select class="input-unit" id="ingredient-unit">
-                </select>
-            </td>
             <td>
                 <input type="text" list="ingredientList" id="ingredientList-input" class="input-ingredient">
                 <datalist id='ingredientList'></datalist>
+                
+            </td>
+            <td><input class="input-amount" id="ingredient-amount" type="number" min="0"></td>
+            <td>
+                <select class="input-unit" id="ingredient-unit">
+                </select>
+                
+            </td>
+            <td id="edit-delete-add">
                 <button class="btn btn-info add-ingredient-btn" onclick="addIngredients()">+</button>
             </td>
         <tr>
@@ -437,6 +589,19 @@ async function getAllIngredients() {
     selectedIngredient.addEventListener("change", (ev) => {
         unitOptions(selectedIngredient.value);
     });
+}
+
+async function editRecipeIngredient(recipeIngredient) {
+    console.log(document.getElementById(recipeIngredient.ingredient.name));
+    //document.getElementById("${recipeIngredient.ingredient.name}").innerHTML = recipeIngredient.ingredient.name.toLowerCase()
+
+    document.getElementById(recipeIngredient.amount).innerHTML =
+        `
+        <input class="input-amount" id="ingredient-amount" type="number" min="0" value="${recipeIngredient.amount}">
+        `
+
+    document.getElementById(recipeIngredient.unit).innerHTML = recipeIngredient.unit
+
 }
 
 function addIngredientToDB() {
@@ -467,7 +632,7 @@ function addIngredients() {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeIdParam = urlParams.get("id");
     recipeIngredient = {}
-    recipeIngredient.amount = parseInt(document.getElementById("ingredient-amount").value);
+    recipeIngredient.amount = parseFloat(document.getElementById("ingredient-amount").value);
     recipeIngredient.unit = document.getElementById("ingredient-unit").value;
     recipeIngredient.recipe = {};
     recipeIngredient.recipe.id = parseInt(recipeIdParam);
@@ -482,13 +647,16 @@ function addIngredients() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+            console.log(ingredientName);
             document.getElementById("added-ingredients").innerHTML += `
             <tr>
-                <td>${recipeIngredient.amount}</td>
-                <td>${recipeIngredient.unit.toLowerCase()}</td>
-                <td>${ingredientName.toLowerCase()}</td>
+                <td id="${ingredientName}">${ingredientName.toLowerCase()}</td>
+                <td id="${recipeIngredient.amount}">${recipeIngredient.amount}</td>
+                <td id="${recipeIngredient.unit}">${recipeIngredient.unit.toLowerCase()}</td>
+                <td><i class="fas fa-pencil-alt" id="pencil"></i><i class="far fa-trash-alt" onclick="deleteRecipeIngredient(${recipeIngredient.id})"></i></td>
             </tr>
             `;
+
         }
     }
     xhr.open("post", url + "addrecipeingredient", true);
