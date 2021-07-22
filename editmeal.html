@@ -18,7 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body onload="getAllRecipesForMeal('breakfast')">
 <div class="row" id="menu">
         <div class="col-sm-2"></div>
         <div class="col-sm-10">
@@ -44,7 +44,8 @@
 	<div>Date</div>
 	<div>MealType</div>
 	<input class="input-amount" id="servings-amount" type="number" min="0"></input>
-	<select type="text" name="recipe" id="recipe"></select>
+	<input type="text" list="recipelist" name="recipe" id="recipes"></input>
+	<datalist id="recipelist"></datalist>
 	<button>add recipe</button>
 	<button>save</button>
 	<button>cancel</button>

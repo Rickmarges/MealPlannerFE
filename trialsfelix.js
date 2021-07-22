@@ -50,3 +50,14 @@ function gaNaarDetailsMealPlan(mealPlanId){
 function goToEditMeal(date,mealType){
 	window.location = "editmeal.html?date="+date+"?mealType="+mealType;
 }
+
+async function getAllRecipesForMeal(mealType){
+	const response = await fetch(baseUrl+"/findrecipesbymealtype/"+mealType);
+	const recipes = await response.json();
+	let optionsString = "";
+	recipes.forEach(recipe=>{
+		optionsString +=`<option value="${recipe.name}"></option>`;
+	}
+	)
+	gebi("recipelist").innerHTML=optionsString;
+}
