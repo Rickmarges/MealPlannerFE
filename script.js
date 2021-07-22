@@ -592,6 +592,7 @@ async function getAllIngredients() {
 }
 
 async function editRecipeIngredient(recipeIngredient) {
+    console.log(recipeIngredient.ingredient.name);
     console.log(document.getElementById(recipeIngredient.ingredient.name));
     //document.getElementById("${recipeIngredient.ingredient.name}").innerHTML = recipeIngredient.ingredient.name.toLowerCase()
 
