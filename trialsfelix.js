@@ -18,10 +18,10 @@ function getRequest(callback, url){
 function printAllMealPlans(mealPlans){
     gebi("toonMealplans").innerHTML ="";
     console.log(mealPlans);
-    mealPlans.forEach(element => gebi("toonMealplans").innerHTML += "<br>"+element.start + htmlDetailButton(element.id));
+    mealPlans.forEach(element => gebi("toonMealplans").innerHTML += "<br>"+element.start + htmlDetailButton(element));
 }
-function htmlDetailButton(id){
-    return `<button onclick=gaNaarDetailsMealPlan(${id})> Details </button>`;
+function htmlDetailButton(mealPlan){
+    return `<button onclick=gaNaarDetailsMealPlan(${mealPlan.id})> Details </button>`;
 }
 function maakMealPlanAan(){
     var mealPlan = {};
@@ -42,7 +42,22 @@ function postObject(objJSON, url){
 function gebi(id){
     return document.getElementById(id);
 }
-function gaNaarDetailsMealPlan(id){
-    window.location = "mealplan.html?id="+id
+function gaNaarDetailsMealPlan(mealPlanId){
+	console.log(mealPlanId);
+    window.location = "mealplan.html?id="+mealPlanId
 
+}
+function goToEditMeal(date,mealType){
+	window.location = "editmeal.html?date="+date+"?mealType="+mealType;
+}
+
+async function getAllRecipesForMeal(mealType){
+	const response = await fetch(baseUrl+"/findrecipesbymealtype/"+mealType);
+	const recipes = await response.json();
+	let optionsString = "";
+	recipes.forEach(recipe=>{
+		optionsString +=`<option value="${recipe.name}"></option>`;
+	}
+	)
+	gebi("recipelist").innerHTML=optionsString;
 }
